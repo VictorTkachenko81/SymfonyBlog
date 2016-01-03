@@ -1,0 +1,5 @@
+AppBundle\Entity\Review:
+  review{1..10}:
+    review: <text($maxNbChars = 500)>
+    rating: <numberBetween($min = 0, $max = 5)>
+    user: @user*

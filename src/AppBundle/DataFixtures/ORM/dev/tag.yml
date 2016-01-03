@@ -1,0 +1,3 @@
+AppBundle\Entity\Tag:
+  tag{1..10}:
+    tag (unique): <word()>

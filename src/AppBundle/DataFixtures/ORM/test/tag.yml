@@ -1,0 +1,3 @@
+AppBundle\Entity\Tag:
+  tag{news, sport}:
+    tag (unique): <current()>

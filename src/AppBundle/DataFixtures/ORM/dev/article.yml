@@ -1,0 +1,6 @@
+AppBundle\Entity\Article:
+  article{1..10}:
+    title (unique): <word()>
+    article: <text($maxNbChars = 500)>
+    author: @user*
+    tag: 2x @tag*

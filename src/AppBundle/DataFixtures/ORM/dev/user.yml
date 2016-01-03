@@ -1,0 +1,6 @@
+AppBundle\Entity\User:
+  user{1..10}:
+    user (unique): <name()>
+    email: <email()>
+    password: <password()>
+    role: @role*
