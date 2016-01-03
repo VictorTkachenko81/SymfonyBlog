@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Article
@@ -32,6 +33,7 @@ class Article
     /**
      * @var string
      *
+     * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      */
     private $slug;
@@ -58,6 +60,7 @@ class Article
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -65,6 +68,7 @@ class Article
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="change", field={"title", "article"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;

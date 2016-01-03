@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * User
@@ -32,6 +33,7 @@ class User
     /**
      * @var string
      *
+     * @Gedmo\Slug(fields={"user"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=50, unique=true)
      */
     private $slug;
@@ -42,6 +44,13 @@ class User
      * @ORM\Column(name="email", type="string", length=50)
      */
     private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=50)
+     */
+    private $password;
 
     /**
      * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
@@ -62,6 +71,7 @@ class User
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -69,6 +79,7 @@ class User
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="change", field={"user", "role", "email", "password"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
@@ -333,5 +344,29 @@ class User
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }
