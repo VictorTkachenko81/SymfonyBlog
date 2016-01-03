@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Role
@@ -27,6 +28,9 @@ class Role
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 50)
      */
     private $role;
 

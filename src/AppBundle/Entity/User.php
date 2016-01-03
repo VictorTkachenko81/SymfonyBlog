@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -27,6 +28,9 @@ class User
      * @var string
      *
      * @ORM\Column(name="user", type="string", length=50, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 50)
      */
     private $user;
 
@@ -35,6 +39,9 @@ class User
      *
      * @Gedmo\Slug(fields={"user"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=50, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 50)
      */
     private $slug;
 
@@ -42,13 +49,19 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=50)
+     * @ORM\Column(name="password", type="string", length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 100)
      */
     private $password;
 
@@ -73,6 +86,9 @@ class User
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $createdAt;
 
@@ -81,6 +97,8 @@ class User
      *
      * @Gedmo\Timestampable(on="change", field={"user", "role", "email", "password"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $updatedAt;
 
@@ -88,6 +106,8 @@ class User
      * @var \DateTime
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $deletedAt;
 

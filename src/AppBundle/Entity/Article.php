@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Article
@@ -27,6 +28,9 @@ class Article
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 100)
      */
     private $title;
 
@@ -35,12 +39,17 @@ class Article
      *
      * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 100)
      */
     private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     * @Assert\NotBlank()
      */
     private $author;
 
@@ -48,6 +57,8 @@ class Article
      * @var string
      *
      * @ORM\Column(name="article", type="text")
+     *
+     * @Assert\Length(max = 10000)
      */
     private $article;
 
@@ -62,6 +73,9 @@ class Article
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $createdAt;
 
@@ -70,6 +84,8 @@ class Article
      *
      * @Gedmo\Timestampable(on="change", field={"title", "article"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $updatedAt;
 
@@ -77,6 +93,8 @@ class Article
      * @var \DateTime
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $deletedAt;
 

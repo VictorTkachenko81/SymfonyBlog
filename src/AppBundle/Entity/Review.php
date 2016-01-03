@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Review
@@ -25,6 +26,8 @@ class Review
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     *  @Assert\NotBlank()
      */
     private $user;
 
@@ -32,6 +35,8 @@ class Review
      * @var string
      *
      * @ORM\Column(name="review", type="text", nullable=true)
+     *
+     * @Assert\Length(max = 1000)
      */
     private $review;
 
@@ -39,6 +44,8 @@ class Review
      * @var int
      *
      * @ORM\Column(name="rating", type="integer", nullable=true)
+     *
+     * @Assert\Range(min = 0, max = 5)
      */
     private $rating;
 
@@ -47,6 +54,9 @@ class Review
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $createdAt;
 
@@ -55,6 +65,8 @@ class Review
      *
      * @Gedmo\Timestampable(on="change", field={"review", "rating"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $updatedAt;
 
@@ -62,6 +74,8 @@ class Review
      * @var \DateTime
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      */
     private $deletedAt;
 

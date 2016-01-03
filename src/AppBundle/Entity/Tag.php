@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tag
@@ -27,6 +28,9 @@ class Tag
      * @var string
      *
      * @ORM\Column(name="tag", type="string", length=50, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 50)
      */
     private $tag;
 
