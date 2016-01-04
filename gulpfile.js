@@ -18,7 +18,9 @@ gulp.task('images', function () {
         .pipe(gulp.dest('web/images/'))
 });
 gulp.task('fonts', function () {
-    return gulp.src(['bower_components/bootstrap/fonts/*'])
+    return gulp.src([
+            'bower_components/bootstrap/fonts/*',
+            'web-src/fonts/*'])
         .pipe(gulp.dest('web/fonts/'))
 });
 gulp.task('lib-js', function() {
