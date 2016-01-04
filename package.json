@@ -1,0 +1,27 @@
+{
+  "name": "html",
+  "version": "0.0.0",
+  "description": "Symfony Blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VictorTkachenko81/SymfonyBlog"
+  },
+  "author": "Victor Tkachenko",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/VictorTkachenko81/SymfonyBlog/issues"
+  },
+  "dependencies": {
+    "bower": "~1.6.7",
+    "gulp": "~3.9.0",
+    "less": "~2.5.3",
+    "gulp-less": "~3.0.5",
+    "gulp-clean": "~0.3.1",
+    "gulp-concat": "~2.6.0",
+    "gulp-uglify": "~1.5.1"
+  }
+}
