@@ -51,7 +51,7 @@ class Article
      *
      * @Assert\NotBlank()
      */
-    private $author;
+    private $user;
 
     /**
      * @var string
@@ -166,27 +166,27 @@ class Article
     }
 
     /**
-     * Set author
+     * Set user
      *
-     * @param string $author
+     * @param string $user
      *
      * @return Article
      */
-    public function setAuthor($author)
+    public function setUser($user)
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get author
+     * Get user
      *
      * @return string
      */
-    public function getAuthor()
+    public function getUser()
     {
-        return $this->author;
+        return $this->user;
     }
 
     /**

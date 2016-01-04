@@ -27,17 +27,17 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="user", type="string", length=50, unique=true)
+     * @ORM\Column(name="name", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank()
      * @Assert\Length(max = 50)
      */
-    private $user;
+    private $name;
 
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"user"}, updatable=true, separator="_")
+     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank()
@@ -66,12 +66,12 @@ class User
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="user")
      */
     private $articles;
 
     /**
-     * @ORM\OneToMany(targetEntity="Review", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Review", mappedBy="user")
      */
     private $reviews;
 
@@ -125,13 +125,13 @@ class User
     /**
      * Set user
      *
-     * @param string $user
+     * @param string $name
      *
      * @return User
      */
-    public function setUser($user)
+    public function setName($name)
     {
-        $this->user = $user;
+        $this->name = $name;
 
         return $this;
     }
@@ -141,9 +141,9 @@ class User
      *
      * @return string
      */
-    public function getUser()
+    public function getName()
     {
-        return $this->user;
+        return $this->name;
     }
 
     /**

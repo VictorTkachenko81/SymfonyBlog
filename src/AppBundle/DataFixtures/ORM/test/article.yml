@@ -2,5 +2,5 @@ AppBundle\Entity\Article:
   article{1}:
     title (unique): 'Test title'
     article: 'Test article'
-    author: @user1
+    user: @user1
     tag: 2x @tag*

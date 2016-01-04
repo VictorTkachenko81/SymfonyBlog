@@ -1,6 +1,6 @@
 AppBundle\Entity\User:
   user{1}:
-    user (unique): 'User name'
+    name (unique): 'User name'
     email: 'email@gmail.com'
     password: 'password'
     role: @role1
