@@ -6,6 +6,6 @@
 
 {{ include( 'AppBundle:frontend:widgetTabs.html.twig' ) }}
 
-{{ include( 'AppBundle:frontend:widgetTags.html.twig' ) }}
+{% render(controller('AppBundle:Frontend/Blog:getTags')) %}
 
 {{ include( 'AppBundle:frontend:widgetText.html.twig' ) }}

@@ -24,7 +24,42 @@ class BlogController extends Controller
             ->findAll();
 
         return [
-            'articles' => $articles,
+            'articles'  => $articles,
+        ];
+    }
+
+    /**
+     * @Route("/article/{slug}", name="showArticle")
+     * @Template("AppBundle:frontend:show.html.twig")
+     *
+     * @return Response
+     */
+    public function showAction($slug)
+    {
+        $article = $this->getDoctrine()
+            ->getRepository('AppBundle:Article')
+            ->findOneBySlug($slug);
+
+        return [
+            'article'   => $article,
+        ];
+    }
+
+    /**
+     * @Template("AppBundle:frontend:widgetTags.html.twig")
+     *
+     * @return Response
+     */
+    public function getTagsAction()
+    {
+        $tags = $this->getDoctrine()
+            ->getRepository('AppBundle:Tag')
+            ->findAll();
+
+        shuffle($tags);
+
+        return [
+            'tags'      => $tags,
         ];
     }
 }

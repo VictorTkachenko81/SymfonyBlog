@@ -1,14 +1,8 @@
 <div class="widget">
     <h4 class="widget-title">TAGS</h4>
     <ul class="list-inline tag-list">
-        <li><a href="#">story</a></li>
-        <li><a href="#">inspiration</a></li>
-        <li><a href="#">creative</a></li>
-        <li><a href="#">e-commerce</a></li>
-        <li><a href="#">statistic data</a></li>
-        <li><a href="#">business</a></li>
-        <li><a href="#">development</a></li>
-        <li><a href="#">startup ideas</a></li>
-        <li><a href="#">enterprise</a></li>
+        {% for tag in tags %}
+            <li><a href="#">{{ tag.tag }}</a></li>
+        {% endfor %}
     </ul>
 </div>

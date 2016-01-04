@@ -1,0 +1,18 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    {{ include( 'AppBundle:frontend:topMenu.html.twig' ) }}
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    {{ include( 'AppBundle:frontend:blogSingle.html.twig' ) }}
+                </div>
+                <div class="col-md-3">
+                    {{ include( 'AppBundle:frontend:rightBlock.html.twig' ) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
