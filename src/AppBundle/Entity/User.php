@@ -71,9 +71,9 @@ class User
     private $articles;
 
     /**
-     * @ORM\OneToMany(targetEntity="Review", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
      */
-    private $reviews;
+    private $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
@@ -271,7 +271,7 @@ class User
     public function __construct()
     {
         $this->articles = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -309,37 +309,37 @@ class User
     }
 
     /**
-     * Add review
+     * Add comment
      *
-     * @param \AppBundle\Entity\Review $review
+     * @param \AppBundle\Entity\Comment $comment
      *
      * @return User
      */
-    public function addReview(Review $review)
+    public function addComment(Comment $comment)
     {
-        $this->reviews[] = $review;
+        $this->comments[] = $comment;
 
         return $this;
     }
 
     /**
-     * Remove review
+     * Remove comment
      *
-     * @param \AppBundle\Entity\Review $review
+     * @param \AppBundle\Entity\Comment $comment
      */
-    public function removeReview(Review $review)
+    public function removeComment(Comment $comment)
     {
-        $this->reviews->removeElement($review);
+        $this->comments->removeElement($comment);
     }
 
     /**
-     * Get reviews
+     * Get comments
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getReviews()
+    public function getComments()
     {
-        return $this->reviews;
+        return $this->comments;
     }
 
     /**

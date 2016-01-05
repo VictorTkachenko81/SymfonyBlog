@@ -56,17 +56,23 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="article", type="text")
+     * @ORM\Column(name="text", type="text")
      *
      * @Assert\Length(max = 10000)
      */
-    private $article;
+    private $text;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
      * @ORM\JoinTable(name="articles_tags")
      */
     private $tags;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="articles")
+     * @ORM\JoinTable(name="articles_categories")
+     */
+    private $categories;
 
     /**
      * @var \DateTime
@@ -82,7 +88,7 @@ class Article
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="change", field={"title", "article"})
+     * @Gedmo\Timestampable(on="change", field={"title", "text"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      *
      * @Assert\DateTime()
@@ -105,6 +111,7 @@ class Article
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -190,27 +197,27 @@ class Article
     }
 
     /**
-     * Set article
+     * Set text
      *
-     * @param string $article
+     * @param string $text
      *
      * @return Article
      */
-    public function setArticle($article)
+    public function setText($text)
     {
-        $this->article = $article;
+        $this->text = $text;
 
         return $this;
     }
 
     /**
-     * Get article
+     * Get text
      *
      * @return string
      */
-    public function getArticle()
+    public function getText()
     {
-        return $this->article;
+        return $this->text;
     }
 
     /**
@@ -317,5 +324,39 @@ class Article
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Add category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Article
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \AppBundle\Entity\Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

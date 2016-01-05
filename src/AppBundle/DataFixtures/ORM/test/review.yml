@@ -1,5 +1,0 @@
-AppBundle\Entity\Review:
-  review{1}:
-    review: 'Text review'
-    rating: '5'
-    user: @user1
