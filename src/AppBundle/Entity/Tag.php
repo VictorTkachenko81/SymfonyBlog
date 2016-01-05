@@ -27,12 +27,23 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="tag", type="string", length=50, unique=true)
+     * @ORM\Column(name="name", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank()
      * @Assert\Length(max = 50)
      */
-    private $tag;
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
+     * @ORM\Column(name="slug", type="string", length=60, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 60)
+     */
+    private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags")
@@ -50,27 +61,27 @@ class Tag
     }
 
     /**
-     * Set tag
+     * Set name
      *
-     * @param string $tag
+     * @param string $name
      *
      * @return Tag
      */
-    public function setTag($tag)
+    public function setName($name)
     {
-        $this->tag = $tag;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get tag
+     * Get name
      *
      * @return string
      */
-    public function getTag()
+    public function getNme()
     {
-        return $this->tag;
+        return $this->name;
     }
 
     /**
@@ -113,5 +124,39 @@ class Tag
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Tag
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
