@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Review
+ * Comment
  *
  * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
@@ -24,12 +24,20 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
      *  @Assert\NotBlank()
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
+     *
+     *  @Assert\NotBlank()
+     */
+    private $article;
 
     /**
      * @var string
@@ -95,7 +103,7 @@ class Comment
      *
      * @param string $text
      *
-     * @return Review
+     * @return Comment
      */
     public function setText($text)
     {
@@ -119,7 +127,7 @@ class Comment
      *
      * @param integer $rating
      *
-     * @return Review
+     * @return Comment
      */
     public function setRating($rating)
     {
@@ -143,7 +151,7 @@ class Comment
      *
      * @param \DateTime $createdAt
      *
-     * @return Review
+     * @return Comment
      */
     public function setCreatedAt($createdAt)
     {
@@ -167,7 +175,7 @@ class Comment
      *
      * @param \DateTime $updatedAt
      *
-     * @return Review
+     * @return Comment
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -191,7 +199,7 @@ class Comment
      *
      * @param \DateTime $deletedAt
      *
-     * @return Review
+     * @return Comment
      */
     public function setDeletedAt($deletedAt)
     {
@@ -215,7 +223,7 @@ class Comment
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return Review
+     * @return Comment
      */
     public function setUser(User $user = null)
     {
@@ -232,5 +240,29 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set article
+     *
+     * @param \AppBundle\Entity\Article $article
+     *
+     * @return Comment
+     */
+    public function setArticle(Article $article = null)
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    /**
+     * Get article
+     *
+     * @return \AppBundle\Entity\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
     }
 }

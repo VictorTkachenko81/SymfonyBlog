@@ -2,10 +2,10 @@
 
 {{ include( 'AppBundle:frontend:widgetContactInfo.html.twig' ) }}
 
-{{ include( 'AppBundle:frontend:widgetCategories.html.twig' ) }}
+{{ render( controller('AppBundle:Frontend/Blog:getCategories') ) }}
 
 {{ include( 'AppBundle:frontend:widgetTabs.html.twig' ) }}
 
-{% render(controller('AppBundle:Frontend/Blog:getTags')) %}
+{{ render( controller('AppBundle:Frontend/Blog:getTags') ) }}
 
-{{ include( 'AppBundle:frontend:widgetText.html.twig' ) }}
+{#{{ include( 'AppBundle:frontend:widgetText.html.twig' ) }}#}

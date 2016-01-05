@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogController extends Controller
 {
     /**
+     * @Method("GET")
      * @Route("/", name="homepage")
      * @Template("AppBundle:frontend:index.html.twig")
      *
@@ -19,16 +20,18 @@ class BlogController extends Controller
      */
     public function indexAction()
     {
-        $articles = $this->getDoctrine()
-            ->getRepository('AppBundle:Article')
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository("AppBundle:Article")
+            ->getArticlesWithCountComment();
 
         return [
-            'articles'  => $articles,
+            'articles' => $articles,
         ];
     }
 
     /**
+     * @param $slug
+     * @Method("GET")
      * @Route("/article/{slug}", name="showArticle")
      * @Template("AppBundle:frontend:show.html.twig")
      *
@@ -36,14 +39,37 @@ class BlogController extends Controller
      */
     public function showAction($slug)
     {
-        $article = $this->getDoctrine()
-            ->getRepository('AppBundle:Article')
-            ->findOneBySlug($slug);
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository("AppBundle:Article")
+            ->getArticleWithCountComment($slug);
 
         return [
-            'article'   => $article,
+            'article' => $article,
         ];
     }
+
+    /**
+     * @param $sortBy
+     * @param $param
+     * @Method("GET")
+     * @Route("/{sortBy}/{param}", name="sortArticles", requirements={
+     *     "sortBy": "category|tag|author|date"
+     *     })
+     * @Template("AppBundle:frontend:index.html.twig")
+     *
+     * @return Response
+     */
+    public function sortAction($sortBy, $param)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository("AppBundle:Article")
+            ->getArticlesSorted($sortBy, $param);
+
+        return [
+            'articles' => $articles,
+        ];
+    }
+//    ToDo: need add sort by date
 
     /**
      * @Template("AppBundle:frontend:widgetTags.html.twig")
@@ -52,14 +78,30 @@ class BlogController extends Controller
      */
     public function getTagsAction()
     {
-        $tags = $this->getDoctrine()
-            ->getRepository('AppBundle:Tag')
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $tags = $em->getRepository("AppBundle:Tag")
+            ->getTagsWithCount();
 
         shuffle($tags);
 
         return [
-            'tags'      => $tags,
+            'tags' => $tags,
+        ];
+    }
+
+    /**
+     * @Template("AppBundle:frontend:widgetCategories.html.twig")
+     *
+     * @return Response
+     */
+    public function getCategoriesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository("AppBundle:Category")
+            ->getCategoriesWithCount();
+
+        return [
+            'categories' => $categories,
         ];
     }
 }

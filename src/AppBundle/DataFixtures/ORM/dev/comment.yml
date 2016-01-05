@@ -3,3 +3,4 @@ AppBundle\Entity\Comment:
     text: <text($maxNbChars = 500)>
     rating: <numberBetween($min = 0, $max = 5)>
     user: @user*
+    article: @article*

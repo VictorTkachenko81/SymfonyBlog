@@ -3,3 +3,4 @@ AppBundle\Entity\Comment:
     text: 'Text comment'
     rating: '5'
     user: @user1
+    article: @article*

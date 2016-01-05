@@ -3,27 +3,39 @@
         <article class="entry-post">
             <header class="entry-header">
                 <h2 class="entry-title">
-                    <a href="{{ url('showArticle', {'slug': article.slug}) }}">{{ article.title }}</a>
+                    <a href="{{ url('showArticle', {'slug': article.0.slug}) }}">{{ article.0.title }}</a>
                 </h2>
                 <div class="meta-line clearfix">
                     <div class="meta-author-category pull-left">
-                        <span class="post-author">by <a href="#">{{ article.user.name }}</a></span>
+                        <span class="post-author">by
+                            <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': article.0.user.slug}) }}">
+                                {{ article.0.user.name }}
+                            </a>
+                        </span>
                         <span class="post-category">In:
-                            <a href="#">Business</a>,
-                            <a href="#">Creative</a>,
-                            <a href="#">Media</a>
+                            {% for key, category in article.0.categories %}
+                                {% if key != 0 %},{% endif %}
+                                <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
+                                    {{ category.name }}
+                                </a>
+                            {% endfor %}
                         </span>
                     </div>
                     <div class="meta-tag-comment pull-right">
                         <span class="post-tags">
                             <i class="fa fa-tag"></i>
-                            {% for key, tag in article.tags %}
+                            {% for key, tag in article.0.tags %}
                                 {% if key != 0 %},{% endif %}
-                                <a href="#">{{ tag.tag }}</a>
+                                <a href="{{ url('sortArticles', {'sortBy': 'tag', 'param': tag.slug}) }}">
+                                    {{ tag.name }}
+                                </a>
                             {% endfor %}
                         </span>
                         <span class="post-comment"><i class="fa fa-comments"></i>
-                            <a href="#">3 Comments</a></span>
+                            <a href="{{ url('showArticle', {'slug': article.0.slug}) }}#comments">
+                                {{ article.countComments }} Comments
+                            </a>
+                        </span>
                     </div>
                 </div>
             </header>
@@ -33,9 +45,9 @@
                         <figure class="featured-image">
                             <a href="#">
                                 <div class="post-date-info clearfix">
-                                    <span class="post-month">{{ article.createdAt|date("M") }}</span>
-                                    <span class="post-date">{{ article.createdAt|date("d") }}</span>
-                                    <span class="post-year">{{ article.createdAt|date("Y") }}</span>
+                                    <span class="post-month">{{ article.0.createdAt|date("M") }}</span>
+                                    <span class="post-date">{{ article.0.createdAt|date("d") }}</span>
+                                    <span class="post-year">{{ article.0.createdAt|date("Y") }}</span>
                                 </div>
                                 <img src="{{ asset('images/buildings-med.jpg') }}" class="img-responsive"
                                      alt="featured-image">
@@ -44,9 +56,11 @@
                     </div>
                     <div class="col-sm-7">
                         <div class="excerpt">
-                            <p>{{ article.article|length > 400 ? article.article|slice(0, 400) ~ '...' : article.article }}</p>
+                            <p>
+                                {{ article.0.text|length > 400 ? article.0.text|slice(0, 400) ~ '...' : article.0.text }}
+                            </p>
                             <p class="read-more">
-                                <a href="{{ url('showArticle', {'slug': article.slug}) }}" class="btn btn-primary">
+                                <a href="{{ url('showArticle', {'slug': article.0.slug}) }}" class="btn btn-primary">
                                     Read More <i class="fa fa-long-arrow-right"></i>
                                 </a>
                             </p>
@@ -57,11 +71,10 @@
         </article>
         <hr>
     {% endfor %}
-
 </div>
 <ul class="pager">
     <li><a href="#">Previous</a></li>
     <li><a href="#">Next</a></li>
 </ul>
 
-{{ dump() }}
+{#{{ dump() }}#}
