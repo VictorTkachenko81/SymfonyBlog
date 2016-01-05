@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <figure class="featured-image">
-                            <a href="#">
+                            <a href="{{ url('sortArticles', {'sortBy': 'date', 'param': article.0.createdAt|date("Y-m-d")}) }}">
                                 <div class="post-date-info clearfix">
                                     <span class="post-month">{{ article.0.createdAt|date("M") }}</span>
                                     <span class="post-date">{{ article.0.createdAt|date("d") }}</span>

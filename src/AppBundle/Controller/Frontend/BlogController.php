@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class BlogController extends Controller
 {
@@ -61,6 +62,22 @@ class BlogController extends Controller
      */
     public function sortAction($sortBy, $param)
     {
+        if ($sortBy == 'date') {
+            $dateConstraint = new Assert\Date();
+            $dateConstraint->message = 'Invalid date';
+
+            $errorList = $this->get('validator')->validate(
+                $param,
+                $dateConstraint
+            );
+
+            if (0 !== count($errorList)) {
+                throw $this->createNotFoundException(
+                    $errorMessage = $errorList[0]->getMessage()
+                );
+            }
+        }
+
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository("AppBundle:Article")
             ->getArticlesSorted($sortBy, $param);
@@ -69,7 +86,6 @@ class BlogController extends Controller
             'articles' => $articles,
         ];
     }
-//    ToDo: need add sort by date
 
     /**
      * @Template("AppBundle:frontend:widgetTags.html.twig")
