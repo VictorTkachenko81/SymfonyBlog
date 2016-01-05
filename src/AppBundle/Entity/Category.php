@@ -7,12 +7,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Review
+ * Category
  *
- * @ORM\Table(name="review")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReviewRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  */
-class Review
+class Category
 {
     /**
      * @var int
@@ -24,30 +24,30 @@ class Review
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @var string
      *
-     *  @Assert\NotBlank()
+     * @ORM\Column(name="name", type="string", length=50, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 50)
      */
-    private $user;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="review", type="text", nullable=true)
+     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
+     * @ORM\Column(name="slug", type="string", length=60, unique=true)
      *
-     * @Assert\Length(max = 1000)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 60)
      */
-    private $review;
+    private $slug;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="rating", type="integer", nullable=true)
-     *
-     * @Assert\Range(min = 0, max = 5)
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="categories")
      */
-    private $rating;
+    private $articles;
 
     /**
      * @var \DateTime
@@ -63,7 +63,7 @@ class Review
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="change", field={"review", "rating"})
+     * @Gedmo\Timestampable(on="change", field={"name"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      *
      * @Assert\DateTime()
@@ -91,51 +91,51 @@ class Review
     }
 
     /**
-     * Set review
+     * Set name
      *
-     * @param string $review
+     * @param string $name
      *
-     * @return Review
+     * @return Category
      */
-    public function setReview($review)
+    public function setName($name)
     {
-        $this->review = $review;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get review
+     * Get name
      *
      * @return string
      */
-    public function getReview()
+    public function getName()
     {
-        return $this->review;
+        return $this->name;
     }
 
     /**
-     * Set rating
+     * Set slug
      *
-     * @param integer $rating
+     * @param string $slug
      *
-     * @return Review
+     * @return Category
      */
-    public function setRating($rating)
+    public function setSlug($slug)
     {
-        $this->rating = $rating;
+        $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get rating
+     * Get slug
      *
-     * @return int
+     * @return string
      */
-    public function getRating()
+    public function getSlug()
     {
-        return $this->rating;
+        return $this->slug;
     }
 
     /**
@@ -143,7 +143,7 @@ class Review
      *
      * @param \DateTime $createdAt
      *
-     * @return Review
+     * @return Category
      */
     public function setCreatedAt($createdAt)
     {
@@ -167,7 +167,7 @@ class Review
      *
      * @param \DateTime $updatedAt
      *
-     * @return Review
+     * @return Category
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -191,7 +191,7 @@ class Review
      *
      * @param \DateTime $deletedAt
      *
-     * @return Review
+     * @return Category
      */
     public function setDeletedAt($deletedAt)
     {
@@ -209,28 +209,45 @@ class Review
     {
         return $this->deletedAt;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set user
+     * Add article
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Article $article
      *
-     * @return Review
+     * @return Category
      */
-    public function setUser(User $user = null)
+    public function addArticle(\AppBundle\Entity\Article $article)
     {
-        $this->user = $user;
+        $this->articles[] = $article;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Remove article
      *
-     * @return \AppBundle\Entity\User
+     * @param \AppBundle\Entity\Article $article
      */
-    public function getUser()
+    public function removeArticle(\AppBundle\Entity\Article $article)
     {
-        return $this->user;
+        $this->articles->removeElement($article);
+    }
+
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
     }
 }
