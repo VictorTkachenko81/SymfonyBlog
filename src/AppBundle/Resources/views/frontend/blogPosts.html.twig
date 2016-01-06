@@ -72,9 +72,16 @@
         <hr>
     {% endfor %}
 </div>
-<ul class="pager">
-    <li><a href="#">Previous</a></li>
-    <li><a href="#">Next</a></li>
-</ul>
 
-{#{{ dump() }}#}
+{#<ul class="pager">#}
+    {#<li><a href="#">Previous</a></li>#}
+    {#<li><a href="#">Next</a></li>#}
+{#</ul>#}
+
+{{ include('AppBundle::pagination.html.twig', {
+        'route': app.request.attributes.get('_route'),
+        'params': app.request.attributes.get('_route_params'),
+        'page': articles.currentPage,
+        'pages': articles.countPages
+    })
+}}

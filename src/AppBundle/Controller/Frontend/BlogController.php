@@ -12,18 +12,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BlogController extends Controller
 {
+
+    //ToDo: fix page:0
+
     /**
+     * @param $page
      * @Method("GET")
-     * @Route("/", name="homepage")
+     * @Route("/{pager}/{page}", name="homepage",
+     *     defaults={"pager": "page", "page": 1},
+     *     requirements={
+     *          "pager": "page",
+     *          "page": "\d+",
+     *     })
      * @Template("AppBundle:frontend:index.html.twig")
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository("AppBundle:Article")
-            ->getArticlesWithCountComment();
+            ->getArticlesWithCountComment($page);
 
         return [
             'articles' => $articles,
@@ -52,15 +61,20 @@ class BlogController extends Controller
     /**
      * @param $sortBy
      * @param $param
+     * @param $page
      * @Method("GET")
-     * @Route("/{sortBy}/{param}", name="sortArticles", requirements={
-     *     "sortBy": "category|tag|author|date"
+     * @Route("/{sortBy}/{param}/{pager}/{page}", name="sortArticles",
+     *     defaults={"pager": "page", "page": 1},
+     *     requirements={
+     *          "sortBy": "category|tag|author|date",
+     *          "pager": "page",
+     *          "page": "\d+",
      *     })
      * @Template("AppBundle:frontend:index.html.twig")
      *
      * @return Response
      */
-    public function sortAction($sortBy, $param)
+    public function sortAction($sortBy, $param, $page = 1)
     {
         if ($sortBy == 'date') {
             $dateConstraint = new Assert\Date();
@@ -77,7 +91,7 @@ class BlogController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository("AppBundle:Article")
-            ->getArticlesSorted($sortBy, $param);
+            ->getArticlesSorted($sortBy, $param, $page);
 
         return [
             'articles' => $articles,

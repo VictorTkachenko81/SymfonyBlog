@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Model\PaginatorWithPages;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -23,9 +24,10 @@ class ArticleRepository extends EntityRepository
             ->getResult();
     }
 
-    public function getArticlesWithCountComment()
+    public function getArticlesWithCountComment($page = 1, $max = 10)
     {
-        return $this->createQueryBuilder('a')
+        $first = $max * ($page - 1);
+        $query = $this->createQueryBuilder('a')
             ->select('a, c, t, u, count(cm.id) as countComments')
             ->leftJoin('a.categories', 'c')
             ->leftJoin('a.tags', 't')
@@ -33,8 +35,12 @@ class ArticleRepository extends EntityRepository
             ->join('a.user', 'u')
             ->groupBy('a, c, t, u')
             ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->setFirstResult($first)
+            ->setMaxResults($max)
+            ->getQuery();
+//            ->getResult();
+
+        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
 
     public function getArticleWithCountComment($slug)
@@ -52,8 +58,9 @@ class ArticleRepository extends EntityRepository
             ->getSingleResult();
     }
 
-    public function getArticlesSorted($sortBy, $param)
+    public function getArticlesSorted($sortBy, $param, $page = 1, $max = 10)
     {
+        $first = $max * ($page - 1);
         $query = $this->createQueryBuilder('a')
             ->select('a, c, t, u, count(cm.id) as countComments')
             ->leftJoin('a.categories', 'c')
@@ -88,9 +95,13 @@ class ArticleRepository extends EntityRepository
                 break;
         }
 
-        return $query
-            ->getQuery()
-            ->getResult();
+        $query
+            ->setFirstResult($first)
+            ->setMaxResults($max)
+            ->getQuery();
+//            ->getResult();
+
+        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
 
     }
 

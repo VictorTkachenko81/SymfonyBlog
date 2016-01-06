@@ -1,7 +1,8 @@
 AppBundle\Entity\Article:
-  article{1..10}:
+  article{1..100}:
     title (unique): <word()>
     text: <text($maxNbChars = 500)>
     user: @user*
     category: 1x @category*
     tag: 2x @tag*
+    createdAt: <dateTimeBetween($startDate = '-1 years', $endDate = 'now')>
