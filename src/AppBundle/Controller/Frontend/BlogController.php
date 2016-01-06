@@ -66,10 +66,7 @@ class BlogController extends Controller
             $dateConstraint = new Assert\Date();
             $dateConstraint->message = 'Invalid date';
 
-            $errorList = $this->get('validator')->validate(
-                $param,
-                $dateConstraint
-            );
+            $errorList = $this->get('validator')->validate($param, $dateConstraint);
 
             if (0 !== count($errorList)) {
                 throw $this->createNotFoundException(
@@ -118,6 +115,30 @@ class BlogController extends Controller
 
         return [
             'categories' => $categories,
+        ];
+    }
+
+    /**
+     * @Template("AppBundle:frontend:widgetTabs.html.twig")
+     *
+     * @return Response
+     */
+    public function getTabsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $popularArticles = $em->getRepository("AppBundle:Article")
+            ->getPopularArticles(5);
+
+        $recentArticles = $em->getRepository("AppBundle:Article")
+            ->getRecentArticles(5);
+
+        $recentComments = $em->getRepository("AppBundle:Comment")
+            ->getRecentComments(5);
+
+        return [
+            'popularArticles' => $popularArticles,
+            'recentArticles'  => $recentArticles,
+            'recentComments'  => $recentComments,
         ];
     }
 }

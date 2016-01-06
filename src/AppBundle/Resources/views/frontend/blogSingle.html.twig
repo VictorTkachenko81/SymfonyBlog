@@ -128,6 +128,7 @@
                         <h4 class="media-heading comment-author"><a href="#">{{ comment.user.name }}</a></h4><span
                                 class="timestamp text-muted">{{ comment.createdAt|date("M d, Y H:i:s") }}</span>
                         <p>{{ comment.text }}</p>
+                        <p><i class="fa fa-star-o"></i> {{ comment.rating }}</p>
                         <p><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
                         <hr>
                     </div>

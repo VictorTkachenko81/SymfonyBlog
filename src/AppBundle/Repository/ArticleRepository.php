@@ -93,4 +93,30 @@ class ArticleRepository extends EntityRepository
             ->getResult();
 
     }
+
+    public function getPopularArticles($max = 5)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a, u, avg(c.rating) as rating')
+            ->leftJoin('a.comments', 'c')
+            ->join('a.user', 'u')
+            ->groupBy('a, u')
+            ->orderBy('rating', 'DESC')
+            ->setFirstResult(0)
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getRecentArticles($max = 5)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a, u')
+            ->join('a.user', 'u')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setFirstResult(0)
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
+    }
 }
