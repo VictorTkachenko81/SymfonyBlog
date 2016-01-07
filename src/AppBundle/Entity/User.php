@@ -48,6 +48,15 @@ class User
     /**
      * @var string
      *
+     * @ORM\Column(name="photo", type="string", length=150, nullable=true)
+     *
+     * @Assert\Length(max = 150)
+     */
+    private $photo;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="email", type="string", length=50)
      *
      * @Assert\NotBlank()
@@ -388,5 +397,29 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return User
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
     }
 }

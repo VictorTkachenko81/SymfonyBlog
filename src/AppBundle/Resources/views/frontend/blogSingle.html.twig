@@ -46,7 +46,7 @@
                     <span class="post-date">{{ article.0.createdAt|date("d") }}</span>
                     <span class="post-year">{{ article.0.createdAt|date("Y") }}</span>
                 </div>
-                <img src="{{ asset('images/buildings.jpg') }}" class="img-responsive" alt="featured-image">
+                <img src="{{ asset(article.0.pictureBig) }}" class="img-responsive" alt="featured-image">
             </figure>
             <div class="excerpt">{{ article.0.text }}</div>
         </div>
@@ -122,7 +122,11 @@
             <li class="media">
                 {% for key, comment in article.0.comments %}
                     <a href="#" class="media-left">
-                        <img src="{{ asset('images/user2.png') }}" class="avatar" alt="avatar">
+                        {% if comment.user.photo %}
+                            <img src="{{ asset(comment.user.photo) }}" class="avatar" alt="avatar">
+                        {% else %}
+                            <span class="avatar anonymous"><i class="fa fa-user"></i></span>
+                        {% endif %}
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading comment-author"><a href="#">{{ comment.user.name }}</a></h4><span

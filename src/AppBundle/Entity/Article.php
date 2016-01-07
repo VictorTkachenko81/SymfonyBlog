@@ -56,6 +56,33 @@ class Article
     /**
      * @var string
      *
+     * @ORM\Column(name="picture_small", type="string", length=150, nullable=true)
+     *
+     * @Assert\Length(max = 150)
+     */
+    private $pictureSmall;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="picture_medium", type="string", length=150, nullable=true)
+     *
+     * @Assert\Length(max = 150)
+     */
+    private $pictureMedium;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="picture_big", type="string", length=150, nullable=true)
+     *
+     * @Assert\Length(max = 150)
+     */
+    private $pictureBig;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="text", type="text")
      *
      * @Assert\Length(max = 10000)
@@ -398,5 +425,77 @@ class Article
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set pictureSmall
+     *
+     * @param string $pictureSmall
+     *
+     * @return Article
+     */
+    public function setPictureSmall($pictureSmall)
+    {
+        $this->pictureSmall = $pictureSmall;
+
+        return $this;
+    }
+
+    /**
+     * Get pictureSmall
+     *
+     * @return string
+     */
+    public function getPictureSmall()
+    {
+        return $this->pictureSmall;
+    }
+
+    /**
+     * Set pictureMedium
+     *
+     * @param string $pictureMedium
+     *
+     * @return Article
+     */
+    public function setPictureMedium($pictureMedium)
+    {
+        $this->pictureMedium = $pictureMedium;
+
+        return $this;
+    }
+
+    /**
+     * Get pictureMedium
+     *
+     * @return string
+     */
+    public function getPictureMedium()
+    {
+        return $this->pictureMedium;
+    }
+
+    /**
+     * Set pictureBig
+     *
+     * @param string $pictureBig
+     *
+     * @return Article
+     */
+    public function setPictureBig($pictureBig)
+    {
+        $this->pictureBig = $pictureBig;
+
+        return $this;
+    }
+
+    /**
+     * Get pictureBig
+     *
+     * @return string
+     */
+    public function getPictureBig()
+    {
+        return $this->pictureBig;
     }
 }

@@ -32,10 +32,28 @@ class Comment
     private $user;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50, nullable=true)
+     *
+     * @Assert\Length(max = 50)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=50, nullable=true)
+     *
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      *
-     *  @Assert\NotBlank()
+     * @Assert\NotBlank()
      */
     private $article;
 
@@ -264,5 +282,53 @@ class Comment
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Comment
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Comment
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

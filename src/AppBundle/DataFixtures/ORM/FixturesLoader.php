@@ -52,8 +52,33 @@ class LoadUserData implements FixtureInterface
             'admin',
             'moderator',
             'user',
+            'anonymous',
         ];
 
         return $roles[$count-1];
+    }
+
+    public function picture()
+    {
+        $picture = [
+            'balloon',
+            'buildings',
+            'people',
+        ];
+
+        return $picture[array_rand($picture)];
+    }
+
+    public function photo()
+    {
+        $photo = [
+            'user1.png',
+            'user2.png',
+            'user3.png',
+            'user4.png',
+            'user5.png',
+        ];
+
+        return $photo[array_rand($photo)];
     }
 }
