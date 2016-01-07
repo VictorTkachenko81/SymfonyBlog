@@ -183,40 +183,9 @@
     <section class="comment-form margin-bottom">
         <h3 class="section-heading">Leave A Comment</h3>
         <p class="heading">Required fields are marked *. Your email will not be published or shared.</p>
-        <form class="form-horizontal comment-form" role="form">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="comment-name" class="control-label sr-only">Name</label>
-                        <input type="text" class="form-control" id="comment-name" placeholder="* Name">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="comment-email" class="control-label sr-only">Email</label>
-                        <input type="email" class="form-control" id="comment-email" placeholder="* Email">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="comment-website" class="control-label sr-only">Website</label>
-                <div class="col-sm-12">
-                    <input type="url" class="form-control" id="comment-website" placeholder="Website">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="comment-text" class="control-label sr-only">Comments</label>
-                <div class="col-sm-12">
-                    <textarea class="form-control" name="comment-text" id="comment-text" rows="5" cols="30"
-                              placeholder="* Your comments"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">Submit Comment</button>
-                </div>
-            </div>
-        </form>
+
+        {{ render( controller('AppBundle:Frontend/Blog:newComment', {'slug': app.request.attributes.get('slug')})) }}
+
     </section>
     <!-- end comment form -->
 </div>

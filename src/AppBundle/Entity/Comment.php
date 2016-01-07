@@ -27,7 +27,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
-     *  @Assert\NotBlank()
+     *  @Assert\NotBlank(message = "User field should not be blank")
      */
     private $user;
 
@@ -53,7 +53,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = "Article field should not be blank")
      */
     private $article;
 
@@ -81,7 +81,7 @@ class Comment
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = "CreatedAt field should not be blank")
      * @Assert\DateTime()
      */
     private $createdAt;
