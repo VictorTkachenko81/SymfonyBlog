@@ -104,65 +104,6 @@ class BlogController extends Controller
         ];
     }
 
-    /**
-     * @Template("AppBundle:frontend:widgetTags.html.twig")
-     *
-     * @return Response
-     */
-    public function getTagsAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $tags = $em->getRepository("AppBundle:Tag")
-            ->getTagsWithCount();
-
-        shuffle($tags);
-
-        return [
-            'tags' => $tags,
-        ];
-    }
-
-    /**
-     * @Template("AppBundle:frontend:widgetCategories.html.twig")
-     *
-     * @return Response
-     */
-    public function getCategoriesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository("AppBundle:Category")
-            ->getCategoriesWithCount();
-
-        return [
-            'categories' => $categories,
-        ];
-    }
-
-    /**
-     * @Template("AppBundle:frontend:widgetTabs.html.twig")
-     *
-     * @return Response
-     */
-    public function getTabsAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $popularArticles = $em->getRepository("AppBundle:Article")
-            ->getPopularArticles(5);
-
-        $recentArticles = $em->getRepository("AppBundle:Article")
-            ->getRecentArticles(5);
-
-        $recentComments = $em->getRepository("AppBundle:Comment")
-            ->getRecentComments(5);
-
-        return [
-            'popularArticles' => $popularArticles,
-            'recentArticles'  => $recentArticles,
-            'recentComments'  => $recentComments,
-        ];
-    }
-
-
     //ToDo: AjaxSubmit
     /**
      * @param Request $request
