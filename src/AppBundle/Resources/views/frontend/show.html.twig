@@ -15,3 +15,8 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/ajaxSubmit.js') }}"></script>
+{% endblock %}

@@ -104,7 +104,6 @@ class BlogController extends Controller
         ];
     }
 
-    //ToDo: AjaxSubmit
     /**
      * @param Request $request
      * @param $slug
@@ -128,10 +127,7 @@ class BlogController extends Controller
             'em' => $em,
             'action' => $this->generateUrl('commentForm', ['slug' => $slug]),
             'method' => Request::METHOD_POST,
-        ])
-            ->add('save', SubmitType::class, array('label' => 'Submit Comment',
-                    'attr' => array('class' => "btn btn-primary")
-                ));
+        ]);
 
         //ToDo: fix check isUserAnonymous
         if ($user = 'anonymous') {
@@ -151,18 +147,36 @@ class BlogController extends Controller
                 );
         }
 
+        $form
+            ->add('save', SubmitType::class, array(
+                'label' => 'Submit Comment',
+                'attr' => array('class' => "btn btn-primary")
+            ));
+
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $em->persist($comment);
                 $em->flush();
 
-                return $this->redirectToRoute('showArticle', ['slug' => $slug]);
+//                return $this->redirectToRoute('showArticle', ['slug' => $slug]);
+                return $this->redirectToRoute('success');
             }
         }
 
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    /**
+     * @Route("/success", name="success")
+     * @Template("AppBundle:frontend:success.html.twig")
+     *
+     * @return Response
+     */
+    public function successAction()
+    {
+        return [];
     }
 }

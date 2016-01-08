@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -20,10 +21,11 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rating', IntegerType::class, array(
-                    'attr' => array('placeholder' => '* Rating')
-                )
-            )
+            ->add('rating', ChoiceType::class, array(
+                'choices' => range(0, 5),
+                'choices_as_values' => true,
+                'placeholder' => '* Rating'
+            ))
             ->add('text', TextareaType::class, array(
                     'attr' => array('placeholder' => '* Your comments')
                 )
