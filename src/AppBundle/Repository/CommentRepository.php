@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Model\PaginatorWithPages;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -22,5 +23,23 @@ class CommentRepository extends EntityRepository
             ->setMaxResults($max)
             ->getQuery()
             ->getResult();
+    }
+
+    public function getArticleComment($slug, $page = 1, $max = 5)
+    {
+        $first = $max * ($page - 1);
+        $query = $this->createQueryBuilder('c')
+            ->select('c, u')
+            ->join('c.article', 'a')
+            ->where('a.slug = ?1')
+            ->join('c.user', 'u')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setFirstResult($first)
+            ->setMaxResults($max)
+            ->setParameter(1, $slug)
+            ->getQuery();
+//            ->getResult();
+
+        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
 }

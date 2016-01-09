@@ -12,18 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
-    public function getArticlesWithDep()
-    {
-        return $this->createQueryBuilder('a')
-            ->select('a, c, t, u, cm')
-            ->leftJoin('a.categories', 'c')
-            ->leftJoin('a.tags', 't')
-            ->leftJoin('a.comments', 'cm')
-            ->join('a.user', 'u')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getArticlesWithCountComment($page = 1, $max = 10)
     {
         $first = $max * ($page - 1);
@@ -41,6 +29,19 @@ class ArticleRepository extends EntityRepository
 //            ->getResult();
 
         return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
+    }
+
+    public function getArticleWithDep($slug)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a, c, t, u')
+            ->leftJoin('a.categories', 'c')
+            ->leftJoin('a.tags', 't')
+            ->join('a.user', 'u')
+            ->where('a.slug = ?1')
+            ->setParameter(1, $slug)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     public function getArticleWithCountComment($slug)

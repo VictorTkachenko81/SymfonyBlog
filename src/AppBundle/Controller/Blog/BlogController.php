@@ -56,7 +56,7 @@ class BlogController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository("AppBundle:Article")
-            ->getArticleWithCountComment($slug);
+            ->getArticleWithDep($slug);
 
         return [
             'article' => $article,
@@ -164,6 +164,30 @@ class BlogController extends Controller
 
         return [
             'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @param $slug
+     * @param $page
+     * @Route("/comments/{slug}/{pager}/{page}", name="articleComments",
+     *     defaults={"pager": "page", "page": 1},
+     *     requirements={
+     *          "pager": "page",
+     *          "page": "[1-9]\d*",
+     *     })
+     * @Template("AppBundle:blog:comments.html.twig")
+     *
+     * @return Response
+     */
+    public function showArticleCommentsAction($slug, $page = 1)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comments = $em->getRepository("AppBundle:Comment")
+            ->getArticleComment($slug, $page, 5);
+
+        return [
+            'comments' => $comments,
         ];
     }
 
