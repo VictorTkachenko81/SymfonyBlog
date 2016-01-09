@@ -29,7 +29,7 @@ class CommentRepository extends EntityRepository
     {
         $first = $max * ($page - 1);
         $query = $this->createQueryBuilder('c')
-            ->select('c, u')
+            ->select('c, a, u')
             ->join('c.article', 'a')
             ->where('a.slug = ?1')
             ->join('c.user', 'u')
