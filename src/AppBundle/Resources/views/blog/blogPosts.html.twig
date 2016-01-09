@@ -1,3 +1,5 @@
+{% extends 'AppBundle:blog:blog.html.twig' %}
+{% block content %}
 <div class="blog medium-thumbnail margin-bottom-30px">
     {% for article in articles %}
         <article class="entry-post">
@@ -78,10 +80,14 @@
     {#<li><a href="#">Next</a></li>#}
 {#</ul>#}
 
-{{ include('AppBundle::pagination.html.twig', {
-        'route': app.request.attributes.get('_route'),
-        'params': app.request.attributes.get('_route_params'),
-        'page': articles.currentPage,
-        'pages': articles.countPages
-    })
-}}
+    {% if articles.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': articles.currentPage,
+            'pages': articles.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

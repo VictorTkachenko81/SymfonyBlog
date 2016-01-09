@@ -58,7 +58,7 @@ class AppExtension extends \Twig_Extension
             ->getRecentComments(5);
 
         return $twig->render(
-            'AppBundle:frontend:widgetTabs.html.twig',
+            'AppBundle:blog:widgetTabs.html.twig',
             array(
                 'popularArticles' => $popularArticles,
                 'recentArticles' => $recentArticles,
@@ -76,7 +76,7 @@ class AppExtension extends \Twig_Extension
         shuffle($tags);
 
         return $twig->render(
-            'AppBundle:frontend:widgetTags.html.twig',
+            'AppBundle:blog:widgetTags.html.twig',
             array(
                 'tags' => $tags,
             )
@@ -90,7 +90,7 @@ class AppExtension extends \Twig_Extension
             ->getCategoriesWithCount();
 
         return $twig->render(
-            'AppBundle:frontend:widgetCategories.html.twig',
+            'AppBundle:blog:widgetCategories.html.twig',
             array(
                 'categories' => $categories,
             )

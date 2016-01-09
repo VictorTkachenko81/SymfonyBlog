@@ -1,0 +1,103 @@
+{% extends 'AppBundle:blog:blog.html.twig' %}
+
+{% block content %}
+    <!-- BLOG SINGLE -->
+    <div class="blog single full-thumbnail">
+        <!-- blog post -->
+        <article class="entry-post">
+            <header class="entry-header">
+                <h2 class="entry-title">
+                    <a href="#">{{ article.0.title }}</a>
+                </h2>
+                <div class="meta-line clearfix">
+                    <div class="meta-author-category pull-left">
+                    <span class="post-author">by
+                        <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': article.0.user.slug}) }}">
+                            {{ article.0.user.name }}
+                        </a>
+                    </span>
+                    <span class="post-category">
+                        In:
+                        {% for key, category in article.0.categories %}
+                            {% if key != 0 %},{% endif %}
+                            <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </span>
+                    </div>
+                    <div class="meta-tag-comment pull-right">
+                    <span class="post-tags">
+                        <i class="fa fa-tag"></i>
+                        {% for key, tag in article.0.tags %}
+                            {% if key != 0 %},{% endif %}
+                            <a href="{{ url('sortArticles', {'sortBy': 'tag', 'param': tag.slug}) }}">
+                                {{ tag.name }}
+                            </a>
+                        {% endfor %}
+                    </span>
+                    <span class="post-comment"><i class="fa fa-comments"></i>
+                        <a href="#comments">{{ article.countComments }} Comments</a>
+                    </span>
+                    </div>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <figure class="featured-image">
+                    <div class="post-date-info clearfix">
+                        <span class="post-month">{{ article.0.createdAt|date("M") }}</span>
+                        <span class="post-date">{{ article.0.createdAt|date("d") }}</span>
+                        <span class="post-year">{{ article.0.createdAt|date("Y") }}</span>
+                    </div>
+                    <img src="{{ asset(article.0.pictureBig) }}" class="img-responsive" alt="featured-image">
+                </figure>
+                <div class="excerpt">{{ article.0.text }}</div>
+            </div>
+        </article>
+        <!-- end blog post -->
+        <hr>
+
+        <!-- comments -->
+        <article class="comments" id="comments">
+            <h3 class="section-heading">Comments ({{ article.countComments }})</h3>
+            <ul class="media-list">
+                <li class="media">
+                    {% for key, comment in article.0.comments %}
+                        <a href="#" class="media-left">
+                            {% if comment.user.photo %}
+                                <img src="{{ asset(comment.user.photo) }}" class="avatar" alt="avatar">
+                            {% else %}
+                                <span class="avatar anonymous"><i class="fa fa-user"></i></span>
+                            {% endif %}
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading comment-author"><a href="#">{{ comment.user.name }}</a></h4><span
+                                    class="timestamp text-muted">{{ comment.createdAt|date("M d, Y H:i:s") }}</span>
+                            <p>{{ comment.text }}</p>
+                            <p><i class="fa fa-star-o"></i> {{ comment.rating }}</p>
+                            <p><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </li>
+            </ul>
+        </article>
+        <!-- end comments -->
+        <hr>
+        <!-- comment form -->
+        <section class="comment-form margin-bottom" id="formBlock">
+            <h3 class="section-heading">Leave A Comment</h3>
+            <p class="heading">Required fields are marked *. Your email will not be published or shared.</p>
+
+            {{ render( controller('AppBundle:Blog/Blog:newComment', {'slug': app.request.attributes.get('slug')})) }}
+
+        </section>
+        <!-- end comment form -->
+    </div>
+    <!-- END BLOG SINGLE -->
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/ajaxSubmit.js') }}"></script>
+{% endblock %}

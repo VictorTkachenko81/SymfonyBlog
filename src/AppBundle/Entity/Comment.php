@@ -81,7 +81,6 @@ class Comment
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      *
-     * @Assert\NotBlank(message = "CreatedAt field should not be blank")
      * @Assert\DateTime()
      */
     private $createdAt;

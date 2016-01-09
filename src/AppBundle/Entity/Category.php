@@ -55,7 +55,6 @@ class Category
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      *
-     * @Assert\NotBlank()
      * @Assert\DateTime()
      */
     private $createdAt;

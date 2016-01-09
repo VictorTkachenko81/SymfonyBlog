@@ -1,109 +1,61 @@
-<!-- NAVBAR -->
 <nav class="navbar navbar-default " role="navigation">
     <div class="container">
-        <!-- TOPBAR -->
-        <div class="topbar">
-            <ul class="list-inline top-nav">
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Support</a></li>
-            </ul>
-            <div class="searchbox">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="search ...">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-							</span>
-                </div>
-            </div>
-        </div>
-        <!-- END TOPBAR -->
-        <!-- MAIN NAVIGATION -->
         <div id="main-nav" class="navbar-collapse collapse navbar-mega-menu">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="{{ url('homepage') }}" data-toggle="dropdown">HOME</a>
+                    <a href="{{ url('homepage') }}">HOME</a>
                 </li>
-                <li class="dropdown ">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">FEATURES  <span class="label label-danger label-main-nav">NEW</span> <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Navigation Menus</a></li>
-                    </ul>
+                <li>
+                    <a href="{{ url('homepage') }}">ADMIN</a>
                 </li>
-                <li class="dropdown ">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">PAGES <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Service Page</a></li>
-                        <li class="dropdown ">
-                            <a href="#">Columns <i class="fa fa-angle-right"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Left Sidebar</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Search Result</a></li>
-                        <li class="dropdown ">
-                            <a href="#">Sub Menu Lvl 1 <i class="fa fa-angle-right"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="dropdown ">
-                                    <a href="#">Sub Menu Lvl 2 <i class="fa fa-angle-right"></i></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Sub Menu Lvl 3</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Sub Menu Lvl 2</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown mega-menu">
-                    <a href="#" data-toggle="dropdown">UI ELEMENTS <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu mega-menu-container">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown">LOGIN <i class="fa fa-angle-down"></i></a>
+                    <ul class="dropdown-menu" >
                         <li>
-                            <div class="mega-menu-content">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h5 class="menu-heading">Buttons &amp; Icons</h5>
-                                        <ul class="list-unstyled list-menu">
-                                            <li><a href="#"><i class="fa fa-square"></i> General Buttons</a></li>
-                                            <li><a href="#"><i class="fa fa-clone"></i> Button Groups</a></li>
-                                            <li><a href="#"><i class="fa fa-asterisk"></i> Icons</a></li>
-                                        </ul>
+                            <div style="width: 300px; padding: 0 15px;">
+                                <h3 class="section-heading">Login Form</h3>
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label for="username" class="control-label sr-only">Username</label>
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control input-sm" id="username" placeholder="Username">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <h5 class="menu-heading">Forms</h5>
-                                        <ul class="list-unstyled list-menu">
-                                            <li><a href="#"><i class="fa fa-check-square"></i> Basic Form Elements</a></li>
-                                            <li><a href="#"><i class="fa fa-plus-square"></i> Advanced Form Elements</a></li>
-                                            <li><a href="#"><i class="fa fa-columns"></i> Form Layouts</a></li>
-                                            <li><a href="#"><i class="fa fa-check-circle"></i> Validation</a></li>
-                                        </ul>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="control-label sr-only">Password</label>
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control input-sm" id="inputPassword3" placeholder="Password" style="cursor: pointer; background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <label class="fancy-checkbox">
+                                                <input type="checkbox">
+                                                <span>Remember me</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-sign-in"></i> Sign in</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                                <p><em>Don't have an account yet?</em> <a href="#"><strong>Sign Up</strong></a>
+                                    <br>
+                                    <em>Forgot your password?</em> <a href="#">Recover Password</a></p>
                             </div>
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown ">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">PORTFOLIO <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Portfolio 4 Columns</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown ">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">SHOP <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Front Page</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">BLOG <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class="active"><a href="#">Blog Medium Thumbnail</a></li>
-                        <li><a href="#">Blog Full Thumbnail</a></li>
-                    </ul>
-                </li>
             </ul>
         </div>
-        <!-- END MAIN NAVIGATION -->
     </div>
 </nav>
-<!-- END NAVBAR -->

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Frontend;
+namespace AppBundle\Controller\Blog;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Form\Type\CommentType;
@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BlogController extends Controller
 {
 
-    //ToDo: fix page:0
-
+    //ToDo: fix page over limit
     /**
      * @param $page
      * @Method("GET")
@@ -28,9 +27,9 @@ class BlogController extends Controller
      *     defaults={"pager": "page", "page": 1},
      *     requirements={
      *          "pager": "page",
-     *          "page": "\d+",
+     *          "page": "[1-9]\d*",
      *     })
-     * @Template("AppBundle:frontend:index.html.twig")
+     * @Template("AppBundle:blog:blogPosts.html.twig")
      *
      * @return Response
      */
@@ -49,7 +48,7 @@ class BlogController extends Controller
      * @param $slug
      * @Method("GET")
      * @Route("/article/{slug}", name="showArticle")
-     * @Template("AppBundle:frontend:show.html.twig")
+     * @Template("AppBundle:blog:blogSingle.html.twig")
      *
      * @return Response
      */
@@ -64,6 +63,8 @@ class BlogController extends Controller
         ];
     }
 
+    //ToDo: fix page over limit
+    //ToDo: fix error 500 when sorting with undefined params and page 0
     /**
      * @param $sortBy
      * @param $param
@@ -74,9 +75,9 @@ class BlogController extends Controller
      *     requirements={
      *          "sortBy": "category|tag|author|date",
      *          "pager": "page",
-     *          "page": "\d+",
+     *          "page": "[1-9]\d*",
      *     })
-     * @Template("AppBundle:frontend:index.html.twig")
+     * @Template("AppBundle:blog:blogPosts.html.twig")
      *
      * @return Response
      */
@@ -108,7 +109,7 @@ class BlogController extends Controller
      * @param Request $request
      * @param $slug
      * @Route("/newCommentFor/{slug}", name="commentForm")
-     * @Template("AppBundle:frontend:commentForm.html.twig")
+     * @Template("AppBundle:blog:commentForm.html.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -119,9 +120,6 @@ class BlogController extends Controller
             ->findOneBySlug($slug);
         $comment = new Comment();
         $comment->setArticle($article);
-
-        //ToDo: createdAt must auto fill in base??
-        $comment->setCreatedAt(new \DateTime('now'));
 
         $form = $this->createForm(CommentType::class, $comment, [
             'em' => $em,
@@ -135,14 +133,14 @@ class BlogController extends Controller
                 ->add('user', EntityType::class, array(
                     'class' => 'AppBundle:User',
                     'choice_label' => 'name',
-                    'placeholder' => '* Choose user',
+                    'placeholder' => '* Choose user (remove after security)',
                 ))
                 ->add('name', TextType::class, array(
-                        'attr' => array('placeholder' => '* Name')
+                        'attr' => array('placeholder' => '* Name (anonymous)')
                     )
                 )
                 ->add('email', EmailType::class, array(
-                        'attr' => array('placeholder' => '* Email')
+                        'attr' => array('placeholder' => '* Email (anonymous)')
                     )
                 );
         }
@@ -171,7 +169,7 @@ class BlogController extends Controller
 
     /**
      * @Route("/success", name="success")
-     * @Template("AppBundle:frontend:success.html.twig")
+     * @Template("AppBundle:blog:success.html.twig")
      *
      * @return Response
      */
