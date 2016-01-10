@@ -1,0 +1,72 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-4 text-center">
+            <div class="number-info info-big vertical">
+                <p>153<span>PROJECTS</span></p>
+            </div>
+        </div>
+        <div class="col-sm-4 text-center">
+            <div class="number-info info-big vertical">
+                <p>#1<span>TOP PROVIDER</span></p>
+            </div>
+        </div>
+        <div class="col-sm-4 text-center">
+            <div class="number-info info-big vertical">
+                <p>132<span>CLIENTS</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="section-heading">Charts</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="info-chart">
+                <div class="pie-chart" data-percent="92">
+                    <span class="percent">92%</span>
+                    <canvas height="180" width="180"></canvas></div>
+                <span class="chart-title">Web Design</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-chart">
+                <div class="pie-chart" data-percent="85">
+                    <span class="percent">85%</span>
+                    <canvas height="180" width="180"></canvas></div>
+                <span class="chart-title">WordPress</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-chart">
+                <div class="pie-chart" data-percent="78">
+                    <span class="percent">78%</span>
+                    <canvas height="180" width="180"></canvas></div>
+                <span class="chart-title">PHP</span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.easypiechart.min.js') }}"></script>
+
+    <script>
+        $( document ).ready(function() {
+            if($('.pie-chart').length > 0) {
+                $('.pie-chart').easyPieChart({
+                    size: 180,
+                    barColor: '#406DA4',
+                    trackColor: '#eaeaea',
+                    scaleColor: false,
+                    lineWidth: 2,
+                    lineCap: "square",
+                    animate: 2000
+                });
+            }
+        });
+    </script>
+
+{% endblock %}

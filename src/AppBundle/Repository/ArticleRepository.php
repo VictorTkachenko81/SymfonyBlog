@@ -26,9 +26,8 @@ class ArticleRepository extends EntityRepository
             ->setFirstResult($first)
             ->setMaxResults($max)
             ->getQuery();
-//            ->getResult();
 
-        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
+        return new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
 
     public function getArticleWithDep($slug)
@@ -100,9 +99,8 @@ class ArticleRepository extends EntityRepository
             ->setFirstResult($first)
             ->setMaxResults($max)
             ->getQuery();
-//            ->getResult();
 
-        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
+        return new PaginatorWithPages($query, $fetchJoinCollection = true);
 
     }
 
