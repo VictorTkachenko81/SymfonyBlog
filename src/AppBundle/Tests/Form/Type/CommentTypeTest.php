@@ -20,8 +20,7 @@ class CommentTypeTest extends TypeTestCase
             'text' => 'test text',
         );
 
-        $type = new CommentType();
-        $form = $this->factory->create($type);
+        $form = $this->factory->create(CommentType::class);
 
 //        $object = TestObject::fromArray($formData);
 
