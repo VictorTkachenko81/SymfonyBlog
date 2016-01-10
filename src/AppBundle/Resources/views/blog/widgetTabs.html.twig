@@ -24,8 +24,7 @@
                         <li>
                             <h4 class="post-title">
                                 <a href="{{ url('showArticle', {'slug': popularArticle.0.slug}) }}">
-                                    <i class="fa fa-star-o"></i> {{ popularArticle.rating|round(1) }}
-                                    {{ popularArticle.0.title }}
+                                    <i class="fa fa-star-o"></i> {{ popularArticle.rating|round(1) }} {{ popularArticle.0.title }}
                                 </a></h4>
                             <span class="text-muted">
                                 {{ popularArticle.0.createdAt|date("M d, Y") }} | by {{ popularArticle.0.user.name }}

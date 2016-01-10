@@ -73,7 +73,7 @@ class AppExtension extends \Twig_Extension
         $tags = $em->getRepository("AppBundle:Tag")
             ->getTagsWithCount();
 
-        shuffle($tags);
+//        shuffle($tags);
 
         return $twig->render(
             'AppBundle:blog:widgetTags.html.twig',
