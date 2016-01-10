@@ -12,6 +12,8 @@ class BlogControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/');
 
+        $date = new \DateTime('now');
+
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains('Test title', $crawler->filter('h2 a')->text());
         $this->assertContains('User name', $crawler->filter('.post-author a')->text());
@@ -22,9 +24,9 @@ class BlogControllerTest extends WebTestCase
         $this->assertContains('1 Comments', $crawler->filter('.post-comment a')->text());
         $this->assertContains('Test category (1)', $crawler->filter('.widget .category-list a')->text());
         $this->assertContains('5 Test title', $crawler->filter('.widget .blogposts.popular a')->text());
-        $this->assertContains('Jan 09, 2016 | by User name', $crawler->filter('.widget .blogposts.popular .text-muted')->text());
+        $this->assertContains($date->format('M d, Y').' | by User name', $crawler->filter('.widget .blogposts.popular .text-muted')->text());
         $this->assertContains('Test title', $crawler->filter('.widget .blogposts.latest a')->text());
-        $this->assertContains('Jan 09, 2016 | by User name', $crawler->filter('.widget .blogposts.latest .text-muted')->text());
+        $this->assertContains($date->format('M d, Y').' | by User name', $crawler->filter('.widget .blogposts.latest .text-muted')->text());
         $this->assertContains('User name', $crawler->filter('.widget .recent-comments .media-heading a')->eq(0)->text());
         $this->assertContains('Test title', $crawler->filter('.widget .recent-comments .media-heading a')->eq(1)->text());
         $this->assertContains('Text comment', $crawler->filter('.widget .recent-comments .text-muted')->text());
