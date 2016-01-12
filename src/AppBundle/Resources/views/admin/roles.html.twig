@@ -1,0 +1,54 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+
+{% block content %}
+
+    <h2 class="section-heading">Roles</h2>
+
+    <p><a class="btn btn-sm btn-default" href="" role="button" id="show_add_form">Add new role</a></p>
+
+    <div id="formBlock"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-squad">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if roles.query.firstResult is defined %}
+                {% set first = roles.query.firstResult %}
+            {% else %}
+                {% set first = 0 %}
+            {% endif %}
+
+            {% for key, role in roles %}
+                <tr>
+                    <td>{{ first + key + 1 }}</td>
+                    <td>
+                        <a href="#">{{ role.role }}</a>
+                    </td>
+                    <td>Edit</td>
+                    <td>Remove</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {% if roles.countPages is defined and roles.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': roles.currentPage,
+            'pages': roles.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

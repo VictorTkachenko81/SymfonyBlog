@@ -12,17 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
-    public function getRecentComments($max = 5)
+    public function getRecentComments($page = 1, $max = 5)
     {
-        return $this->createQueryBuilder('c')
+        $first = $max * ($page - 1);
+        $query = $this->createQueryBuilder('c')
             ->select('c, a, u')
             ->join('c.article', 'a')
             ->join('c.user', 'u')
             ->orderBy('c.createdAt', 'DESC')
-            ->setFirstResult(0)
+            ->setFirstResult($first)
             ->setMaxResults($max)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+
+        return new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
 
     public function getArticleComment($slug, $page = 1, $max = 5)
@@ -38,8 +40,7 @@ class CommentRepository extends EntityRepository
             ->setMaxResults($max)
             ->setParameter(1, $slug)
             ->getQuery();
-//            ->getResult();
 
-        return $articles = new PaginatorWithPages($query, $fetchJoinCollection = true);
+        return new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
 }

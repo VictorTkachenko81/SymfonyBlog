@@ -55,7 +55,7 @@ class AppExtension extends \Twig_Extension
             ->getRecentArticles(5);
 
         $recentComments = $em->getRepository("AppBundle:Comment")
-            ->getRecentComments(5);
+            ->getRecentComments(1, 5);
 
         return $twig->render(
             'AppBundle:blog:widgetTabs.html.twig',
