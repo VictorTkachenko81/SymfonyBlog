@@ -27,12 +27,12 @@ class Role
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=50)
+     * @ORM\Column(name="name", type="string", length=50)
      *
      * @Assert\NotBlank()
      * @Assert\Length(max = 50)
      */
-    private $role;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="role")
@@ -50,27 +50,27 @@ class Role
     }
 
     /**
-     * Set role
+     * Set name
      *
-     * @param string $role
+     * @param string $name
      *
      * @return Role
      */
-    public function setRole($role)
+    public function setName($name)
     {
-        $this->role = $role;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get role
+     * Get name
      *
      * @return string
      */
-    public function getRole()
+    public function getName()
     {
-        return $this->role;
+        return $this->name;
     }
 
     /**

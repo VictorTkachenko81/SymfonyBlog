@@ -1,3 +1,3 @@
 AppBundle\Entity\Role:
   role{1}:
-    role (unique): <role($fake('current'))>
+    name (unique): <role($fake('current'))>

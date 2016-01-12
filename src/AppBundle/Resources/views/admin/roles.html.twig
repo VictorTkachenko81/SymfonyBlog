@@ -4,10 +4,15 @@
 
     <h2 class="section-heading">Roles</h2>
 
-    <p><a class="btn btn-sm btn-default" href="" role="button" id="show_add_form">Add new role</a></p>
+    <p style="text-align: right;">
+        <a class="btn btn-sm btn-default" href="{{ url('roleNew') }}" role="button" id="show_add_form">
+            Add new role
+        </a>
+    </p>
 
     <div id="formBlock"></div>
 
+    {{ form_start(delete) }}
     <div class="table-responsive">
         <table class="table table-striped table-squad">
             <thead>
@@ -15,7 +20,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Edit</th>
-                <th>Remove</th>
+                <th style="width: 30px; text-align: center;">Remove</th>
             </tr>
             </thead>
             <tbody>
@@ -30,12 +35,24 @@
                 <tr>
                     <td>{{ first + key + 1 }}</td>
                     <td>
-                        <a href="#">{{ role.role }}</a>
+                        <a href="#">{{ role.name }}</a>
                     </td>
-                    <td>Edit</td>
-                    <td>Remove</td>
+                    <td>
+                        <a class="edit" href="{{ url('roleEdit', {'id': role.id}) }}">
+                            edit
+                        </a>
+                    </td>
+                    <td style="text-align: center">
+                        {{ form_widget(attribute(delete.roles, key)) }}
+                    </td>
                 </tr>
             {% endfor %}
+            <tr>
+                <td colspan="3"></td>
+                <td style="text-align: center">
+                    {{ form_end(delete) }}
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
