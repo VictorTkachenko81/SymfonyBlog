@@ -1,2 +1,7 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-{{ form(form) }}
+
+{% block content %}
+    <h2 class="section-heading">{{ title }}</h2>
+    {{ form(form) }}
+{% endblock content %}

@@ -91,60 +91,37 @@ class RoleController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @Route("/role/new", name="roleNew")
-     * @Method({"GET", "POST"})
-     * @Template("AppBundle:admin/form:role.html.twig")
-     *
-     * @return Response
-     */
-    public function newRoleAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $role = new Role();
-
-        $form = $this->createForm(RoleType::class, $role, [
-            'em' => $em,
-            'action' => $this->generateUrl('roleNew'),
-            'method' => Request::METHOD_POST,
-        ])
-            ->add('save', SubmitType::class, array('label' => 'Save'));
-
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $em->persist($role);
-                $em->flush();
-
-                return $this->redirectToRoute('rolesAdmin');
-            }
-        }
-
-        return [
-            'form' => $form->createView(),
-        ];
-    }
-
-    /**
      * @param $id
+     * @param $action
      * @param Request $request
-     * @Route("/role/edit/{id}", name="roleEdit", requirements={
-     *     "id": "\d+"
+     * @Route("/role/{action}/{id}", name="roleEdit",
+     *     defaults={"id": 0},
+     *     requirements={
+     *      "action": "new|edit",
+     *      "id": "\d+"
      *     })
      * @Method({"GET", "POST"})
      * @Template("AppBundle:admin/form:role.html.twig")
      *
      * @return Response
      */
-    public function editRoleAction($id, Request $request)
+    public function editRoleAction($id, $action, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $role = $em->getRepository('AppBundle:Role')
-            ->find($id);
+        if ($action == "edit") {
+            $role = $em->getRepository('AppBundle:Role')
+                ->find($id);
+            $title = 'Edit role id: '.$id;
+        }
+        else {
+            $role = new Role();
+            $title = 'Create new role';
+        }
+
 
         $form = $this->createForm(RoleType::class, $role, [
             'em' => $em,
-            'action' => $this->generateUrl('roleEdit', ['id' => $id]),
+            'action' => $this->generateUrl('roleEdit', ['action' => $action, 'id' => $id]),
             'method' => Request::METHOD_POST,
         ])
             ->add('save', SubmitType::class, array('label' => 'Save'));
@@ -160,7 +137,8 @@ class RoleController extends Controller
         }
 
         return [
-            'form' => $form->createView(),
+            'title' => $title,
+            'form'  => $form->createView(),
         ];
     }
 
