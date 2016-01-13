@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class User
 {
@@ -52,6 +54,17 @@ class User
      * @Assert\Length(max = 150)
      */
     private $photo;
+
+    /**
+     * @Assert\File(maxSize="6000000",
+     *     mimeTypes={
+     *     "image/jpeg",
+     *     "image/jpg",
+     *     "image/png"})
+     */
+    private $file;
+
+    private $temp;
 
     /**
      * @var string
@@ -420,4 +433,110 @@ class User
     {
         return $this->photo;
     }
+
+
+    /**
+     * ***********************
+     * Upload images start
+     * ***********************
+     */
+
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        if (isset($this->photo)) {
+            $this->temp = $this->photo;
+            $this->photo = null;
+        } else {
+            $this->photo = 'initial';
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->photo
+            ? null
+            : $this->getUploadRootDir().'/'.$this->photo;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->photo
+            ? null
+            : $this->getUploadDir().'/'.$this->photo;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'images/users';
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->photo = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        $this->getFile()->move($this->getUploadRootDir(), $this->photo);
+
+        if (isset($this->temp)) {
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            $this->temp = null;
+        }
+        $this->file = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $file = $this->getAbsolutePath();
+        if ($file) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * ***********************
+     * Upload images end
+     * ***********************
+     */
 }

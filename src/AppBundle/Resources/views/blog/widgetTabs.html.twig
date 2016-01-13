@@ -55,7 +55,7 @@
                             <div class="media">
                                 <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': recentComment.user.slug}) }}" class="media-left">
                                     {% if recentComment.user.photo %}
-                                        <img src="{{ asset(recentComment.user.photo) }}" class="img-circle" alt="Avatar">
+                                        <img src="{{ asset(recentComment.user.getWebPath) }}" class="img-circle" alt="Avatar">
                                     {% else %}
                                         <span class="avatar anonymous"><i class="fa fa-user"></i></span>
                                     {% endif %}

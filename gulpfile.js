@@ -13,7 +13,7 @@ gulp.task('less', function() {
 });
 gulp.task('images', function () {
     return gulp.src([
-            'web-src/images/*'
+            'web-src/images/**/*'
         ])
         .pipe(gulp.dest('web/images/'))
 });
