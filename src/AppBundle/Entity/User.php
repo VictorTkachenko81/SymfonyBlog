@@ -40,7 +40,6 @@ class User
      * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=50, unique=true)
      *
-     * @Assert\NotBlank()
      * @Assert\Length(max = 50)
      */
     private $slug;

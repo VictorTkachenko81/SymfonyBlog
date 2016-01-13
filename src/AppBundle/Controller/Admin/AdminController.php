@@ -79,30 +79,6 @@ class AdminController extends Controller
     }
 
     /**
-     * @param $page
-     * @Method("GET")
-     * @Route("/users/{pager}/{page}", name="usersAdmin",
-     *     defaults={"pager": "page", "page": 1},
-     *     requirements={
-     *          "pager": "page",
-     *          "page": "[1-9]\d*",
-     *     })
-     * @Template("AppBundle:admin:users.html.twig")
-     *
-     * @return Response
-     */
-    public function usersAction($page = 1)
-    {
-        $users = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findAll();
-
-        return [
-            'users' => $users,
-        ];
-    }
-
-    /**
      * @Route("/success", name="successAdmin")
      * @Template("AppBundle:blog:success.html.twig")
      *

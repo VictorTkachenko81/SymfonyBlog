@@ -4,10 +4,15 @@
 
     <h2 class="section-heading">Users</h2>
 
-    <p><a class="btn btn-sm btn-default" href="" role="button" id="show_add_form">Add new user</a></p>
+    <p style="text-align: right;">
+        <a class="btn btn-sm btn-default" href="{{ url('userEdit', {'action': 'new'}) }}" role="button" id="show_add_form">
+            Add new user
+        </a>
+    </p>
 
     <div id="formBlock"></div>
 
+    {{ form_start(delete) }}
     <div class="table-responsive">
         <table class="table table-striped table-squad">
             <thead>
@@ -33,31 +38,27 @@
             {% for key, user in users %}
                 <tr>
                     <td>{{ first + key + 1 }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.role.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>{{ user.createdAt|date("M d, Y") }}</td>
                     <td>
-                        <a href="#">{{ user.name }}</a>
-                    </td>
-                    <td>
-                        <a href="#">
-                            {{ user.role.role }}
+                        <a class="edit" href="{{ url('userEdit', {'action': 'edit', 'id': user.id}) }}">
+                            edit
                         </a>
                     </td>
-                    <td>
-                        <a href="#">
-                            {{ user.email }}
-                        </a>
+                    <td style="text-align: center">
+                        {{ form_widget(attribute(delete.users, key)) }}
                     </td>
-                    <td>
-                        <a href="#">
-                            {{ user.password }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ user.createdAt|date("M d, Y") }}
-                    </td>
-                    <td>Edit</td>
-                    <td>Remove</td>
                 </tr>
             {% endfor %}
+            <tr>
+                <td colspan="7"></td>
+                <td style="text-align: center">
+                    {{ form_end(delete) }}
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
