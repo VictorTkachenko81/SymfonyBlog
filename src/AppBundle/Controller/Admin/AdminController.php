@@ -55,30 +55,6 @@ class AdminController extends Controller
     }
 
     /**
-     * @param $page
-     * @Method("GET")
-     * @Route("/comments/{pager}/{page}", name="commentsAdmin",
-     *     defaults={"pager": "page", "page": 1},
-     *     requirements={
-     *          "pager": "page",
-     *          "page": "[1-9]\d*",
-     *     })
-     * @Template("AppBundle:admin:comments.html.twig")
-     *
-     * @return Response
-     */
-    public function commentsAction($page = 1)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $comments = $em->getRepository("AppBundle:Comment")
-            ->getRecentComments($page, 10);
-
-        return [
-            'comments' => $comments,
-        ];
-    }
-
-    /**
      * @Route("/success", name="successAdmin")
      * @Template("AppBundle:blog:success.html.twig")
      *
