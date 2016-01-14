@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Article
 {
@@ -40,7 +42,6 @@ class Article
      * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      *
-     * @Assert\NotBlank()
      * @Assert\Length(max = 100)
      */
     private $slug;
@@ -79,6 +80,17 @@ class Article
      * @Assert\Length(max = 150)
      */
     private $pictureBig;
+
+    /**
+     * @Assert\File(maxSize="6000000",
+     *     mimeTypes={
+     *     "image/jpeg",
+     *     "image/jpg",
+     *     "image/png"})
+     */
+    private $file;
+
+    private $temp;
 
     /**
      * @var string
@@ -497,4 +509,109 @@ class Article
     {
         return $this->pictureBig;
     }
+
+
+    /**
+     * ***********************
+     * Upload images start
+     * ***********************
+     */
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        if (isset($this->pictureMedium)) {
+            $this->temp = $this->pictureMedium;
+            $this->pictureMedium = null;
+        } else {
+            $this->pictureMedium = 'initial';
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->pictureMedium
+            ? null
+            : $this->getUploadRootDir().'/'.$this->pictureMedium;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->pictureMedium
+            ? null
+            : $this->getUploadDir().'/'.$this->pictureMedium;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'images';
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->pictureMedium = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        $this->getFile()->move($this->getUploadRootDir(), $this->pictureMedium);
+
+        if (isset($this->temp)) {
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            $this->temp = null;
+        }
+        $this->file = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $file = $this->getAbsolutePath();
+        if ($file) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * ***********************
+     * Upload images end
+     * ***********************
+     */
 }

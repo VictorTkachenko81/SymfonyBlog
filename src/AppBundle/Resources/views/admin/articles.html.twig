@@ -6,7 +6,11 @@
         ({{ articles.count }})
     </h2>
 
-    <p><a class="btn btn-sm btn-default" href="" role="button" id="show_add_form">Add new article</a></p>
+    <p>
+        <a class="btn btn-sm btn-default" href="{{ url('articleEdit', {'action': 'new'}) }}" role="button" id="show_add_form">
+            Add new article
+        </a>
+    </p>
 
     <div id="formBlock"></div>
 
@@ -60,7 +64,11 @@
                     <td>
                         {{ article.0.createdAt|date("M d, Y") }}
                     </td>
-                    <td>Edit</td>
+                    <td>
+                        <a class="edit" href="{{ url('articleEdit', {'action': 'edit', 'id': article.0.id}) }}">
+                            edit
+                        </a>
+                    </td>
                     <td>Remove</td>
                 </tr>
             {% endfor %}

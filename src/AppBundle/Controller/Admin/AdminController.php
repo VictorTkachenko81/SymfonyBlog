@@ -29,31 +29,6 @@ class AdminController extends Controller
         return [];
     }
 
-    //ToDo: fix page over limit
-    /**
-     * @param $page
-     * @Method("GET")
-     * @Route("/articles/{pager}/{page}", name="articlesAdmin",
-     *     defaults={"pager": "page", "page": 1},
-     *     requirements={
-     *          "pager": "page",
-     *          "page": "[1-9]\d*",
-     *     })
-     * @Template("AppBundle:admin:articles.html.twig")
-     *
-     * @return Response
-     */
-    public function articlesAction($page = 1)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository("AppBundle:Article")
-            ->getArticlesWithCountComment($page);
-
-        return [
-            'articles' => $articles,
-        ];
-    }
-
     /**
      * @Route("/success", name="successAdmin")
      * @Template("AppBundle:blog:success.html.twig")
