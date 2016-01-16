@@ -96,7 +96,7 @@ class Article
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="article", cascade={"remove"})
      */
     private $comments;
 

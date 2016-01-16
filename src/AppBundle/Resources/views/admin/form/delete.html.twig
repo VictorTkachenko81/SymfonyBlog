@@ -1,0 +1,9 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+{#{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}#}
+
+{% block content %}
+    <div class="alert alert-warning" role="alert">
+        <strong>Attention!</strong> {{ message }}
+    </div>
+    {{ form(form) }}
+{% endblock content %}

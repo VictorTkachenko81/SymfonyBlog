@@ -58,20 +58,20 @@ class ArticleController extends Controller
      *
      * @return Response
      */
-    public function editUserAction($id, $action, Request $request)
+    public function editArticleAction($id, $action, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         if ($action == "edit") {
-            $user = $em->getRepository('AppBundle:Article')
+            $article = $em->getRepository('AppBundle:Article')
                 ->find($id);
             $title = 'Edit article id: '.$id;
         }
         else {
-            $user = new Article();
+            $article = new Article();
             $title = 'Create new article';
         }
 
-        $form = $this->createForm(ArticleType::class, $user, [
+        $form = $this->createForm(ArticleType::class, $article, [
             'em'        => $em,
             'action'    => $this->generateUrl('articleEdit', ['action' => $action, 'id' => $id]),
             'method'    => Request::METHOD_POST,
@@ -81,7 +81,7 @@ class ArticleController extends Controller
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em->persist($user);
+                $em->persist($article);
                 $em->flush();
 
                 return $this->redirectToRoute('articlesAdmin');
@@ -90,6 +90,56 @@ class ArticleController extends Controller
 
         return [
             'title' => $title,
+            'form'  => $form->createView(),
+        ];
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @Route("/article/delete/{id}", name="articleDelete",
+     *     requirements={
+     *      "id": "\d+"
+     *     })
+     * @Method({"GET", "POST"})
+     * @Template("AppBundle:admin/form:delete.html.twig")
+     *
+     * @return Response
+     */
+    public function deleteArticleAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('AppBundle:Article')
+            ->find($id);
+        $message = 'You want to delete article "' . $article->getTitle() . '" (id: ' . $id . '). ';
+        $message .= 'Related records will be deleted: comments (count: ' . count($article->getComments()) . '). ';
+        $message .= 'Are you sure, you want to continue?';
+
+
+        $form = $this->createFormBuilder($article)
+            ->setAction($this->generateUrl('articleDelete', ['id' => $id]))
+            ->setMethod('POST')
+            ->add('delete', SubmitType::class, array(
+                    'label'     => 'Continue',
+                    'attr'      => [
+                        'class' => 'btn btn-default'
+                    ],
+                )
+            )
+            ->getForm();
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->remove($article);
+                $em->flush();
+
+                return $this->redirectToRoute('articlesAdmin');
+            }
+        }
+
+        return [
+            'message' => $message,
             'form'  => $form->createView(),
         ];
     }

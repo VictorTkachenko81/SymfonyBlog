@@ -6,7 +6,7 @@
         ({{ articles.count }})
     </h2>
 
-    <p>
+    <p style="text-align: right;">
         <a class="btn btn-sm btn-default" href="{{ url('articleEdit', {'action': 'new'}) }}" role="button" id="show_add_form">
             Add new article
         </a>
@@ -69,7 +69,11 @@
                             edit
                         </a>
                     </td>
-                    <td>Remove</td>
+                    <td>
+                        <a class="delete" href="{{ url('articleDelete', {'id': article.0.id}) }}">
+                            delete
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

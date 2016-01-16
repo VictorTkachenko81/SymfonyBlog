@@ -2,10 +2,16 @@
     <li class="list-group-item {% if app.request.attributes.get('_route') == 'mainAdmin' %}current{% endif %}">
         <a href="{{ url('mainAdmin') }}">Main</a>
     </li>
-    <li class="list-group-item {% if app.request.attributes.get('_route') == 'articlesAdmin' %}current{% endif %}">
+    <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['articlesAdmin', 'articleEdit', 'articleDelete'] %}
+            current
+        {% endif %}">
         <a href="{{ url('articlesAdmin') }}">Articles</a>
     </li>
-    <li class="list-group-item {% if app.request.attributes.get('_route') == 'commentsAdmin' %}current{% endif %}">
+    <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['commentsAdmin', 'commentEdit'] %}
+            current
+        {% endif %}">
         <a href="{{ url('commentsAdmin') }}">Comments</a>
     </li>
     <li class="list-group-item has-submenu {% if app.request.attributes.get('_route')
