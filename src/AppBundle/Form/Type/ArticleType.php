@@ -37,7 +37,12 @@ class ArticleType extends AbstractType
                 'choice_label'  => 'name',
                 'placeholder'   => '* Choose category',
                 'multiple'      => 'true',
-                'expanded'      => 'true'
+            ))
+            ->add('tags', EntityType::class, array(
+                'class'         => 'AppBundle:Tag',
+                'choice_label'  => 'name',
+                'placeholder'   => '* Choose tags',
+                'multiple'      => 'true',
             ))
             ->add('text', TextareaType::class, array(
                 'attr'          => array('placeholder' => '* Your article text')
