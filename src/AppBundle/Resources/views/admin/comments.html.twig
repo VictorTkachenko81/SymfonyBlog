@@ -15,12 +15,11 @@
             <tr>
                 <th>#</th>
                 <th>Article</th>
-                <th>Category</th>
                 <th>Author</th>
                 <th>Rating</th>
                 <th>Created</th>
                 <th>Edit</th>
-                <th style="width: 30px; text-align: center;">Remove</th>
+                <th style="width: 30px; text-align: center;">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -36,14 +35,6 @@
                     <td>{{ first + key + 1 }}</td>
                     <td>
                         <a href="{{ url('showArticle', {'slug': comment.article.slug}) }}">{{ comment.article.title }}</a>
-                    </td>
-                    <td>
-                        {% for key, category in comment.article.categories %}
-                            {% if key != 0 %},{% endif %}
-                            <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
-                                {{ category.name }}
-                            </a>
-                        {% endfor %}
                     </td>
                     <td>
                         <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': comment.user.slug}) }}">
@@ -67,7 +58,7 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td colspan="7"></td>
+                <td colspan="6"></td>
                 <td style="text-align: center">
                     {{ form_end(delete) }}
                 </td>

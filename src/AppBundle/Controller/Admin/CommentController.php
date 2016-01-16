@@ -55,7 +55,7 @@ class CommentController extends Controller
                 )
             )
             ->add('delete', SubmitType::class, array(
-                    'label'     => 'Remove',
+                    'label'     => 'Delete',
                     'attr'      => [
                         'class' => 'btn btn-xs btn-danger'
                     ],
@@ -112,7 +112,7 @@ class CommentController extends Controller
         $em = $this->getDoctrine()->getManager();
         $comment = $em->getRepository('AppBundle:Comment')
             ->find($id);
-        $title = 'Edit comment id: '.$id. ' for article "' . $comment->getArticle()->getTitle() . '"';
+        $title = 'Edit comment id: "'.$id. '" for article "' . $comment->getArticle()->getTitle() . '"';
 
         $form = $this->createForm(CommentAdminType::class, $comment, [
             'em' => $em,
