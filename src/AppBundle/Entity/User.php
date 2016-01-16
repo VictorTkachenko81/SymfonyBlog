@@ -489,7 +489,7 @@ class User
 
     protected function getUploadDir()
     {
-        return 'images/users';
+        return 'media/users';
     }
 
     /**
@@ -518,6 +518,9 @@ class User
 
         if (isset($this->temp)) {
             unlink($this->getUploadRootDir().'/'.$this->temp);
+
+            $this->clearCache($this->getUploadDir().'/'.$this->temp);
+
             $this->temp = null;
         }
         $this->file = null;
@@ -531,7 +534,16 @@ class User
         $file = $this->getAbsolutePath();
         if ($file) {
             unlink($file);
+
+            $this->clearCache($this->getWebPath());
         }
+    }
+
+    public function clearCache($path)
+    {
+        $kernel = $GLOBALS['kernel'];
+        $cacheManager = $kernel->getContainer()->get('liip_imagine.cache.manager');
+        $cacheManager->remove($path);
     }
 
     /**

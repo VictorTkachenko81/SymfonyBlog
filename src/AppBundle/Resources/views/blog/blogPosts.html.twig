@@ -51,7 +51,7 @@
                                     <span class="post-date">{{ article.0.createdAt|date("d") }}</span>
                                     <span class="post-year">{{ article.0.createdAt|date("Y") }}</span>
                                 </div>
-                                <img src="{{ asset(article.0.pictureMedium) }}" class="img-responsive"
+                                <img src="{{ article.0.getWebPath|imagine_filter('medium_thumbnail') }}" class="img-responsive"
                                      alt="featured-image">
                             </a>
                         </figure>

@@ -7,7 +7,7 @@
                 <div class="media {% if comment.article.user.slug == comment.user.slug %}comment-by-author{% endif %}">
                     <a href="#" class="media-left">
                         {% if comment.user.photo %}
-                            <img src="{{ asset(comment.user.getWebPath) }}" class="avatar" alt="avatar">
+                            <img src="{{ asset(comment.user.getWebPath|imagine_filter('user_thumbnail')) }}" class="avatar" alt="avatar">
                         {% else %}
                             <span class="avatar anonymous"><i class="fa fa-user"></i></span>
                         {% endif %}

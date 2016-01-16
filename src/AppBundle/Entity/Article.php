@@ -57,29 +57,11 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="picture_small", type="string", length=150, nullable=true)
+     * @ORM\Column(name="picture", type="string", length=150, nullable=true)
      *
      * @Assert\Length(max = 150)
      */
-    private $pictureSmall;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="picture_medium", type="string", length=150, nullable=true)
-     *
-     * @Assert\Length(max = 150)
-     */
-    private $pictureMedium;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="picture_big", type="string", length=150, nullable=true)
-     *
-     * @Assert\Length(max = 150)
-     */
-    private $pictureBig;
+    private $picture;
 
     /**
      * @Assert\File(maxSize="6000000",
@@ -439,15 +421,15 @@ class Article
     }
 
     /**
-     * Set pictureSmall
+     * Set picture
      *
-     * @param string $pictureSmall
+     * @param string $picture
      *
      * @return Article
      */
-    public function setPictureSmall($pictureSmall)
+    public function setPictureSmall($picture)
     {
-        $this->pictureSmall = $pictureSmall;
+        $this->picture = $picture;
 
         return $this;
     }
@@ -457,60 +439,12 @@ class Article
      *
      * @return string
      */
-    public function getPictureSmall()
+    public function getPicture()
     {
-        return $this->pictureSmall;
+        return $this->picture;
     }
-
-    /**
-     * Set pictureMedium
-     *
-     * @param string $pictureMedium
-     *
-     * @return Article
-     */
-    public function setPictureMedium($pictureMedium)
-    {
-        $this->pictureMedium = $pictureMedium;
-
-        return $this;
-    }
-
-    /**
-     * Get pictureMedium
-     *
-     * @return string
-     */
-    public function getPictureMedium()
-    {
-        return $this->pictureMedium;
-    }
-
-    /**
-     * Set pictureBig
-     *
-     * @param string $pictureBig
-     *
-     * @return Article
-     */
-    public function setPictureBig($pictureBig)
-    {
-        $this->pictureBig = $pictureBig;
-
-        return $this;
-    }
-
-    /**
-     * Get pictureBig
-     *
-     * @return string
-     */
-    public function getPictureBig()
-    {
-        return $this->pictureBig;
-    }
-
-
+    
+    
     /**
      * ***********************
      * Upload images start
@@ -525,11 +459,11 @@ class Article
     public function setFile(UploadedFile $file = null)
     {
         $this->file = $file;
-        if (isset($this->pictureMedium)) {
-            $this->temp = $this->pictureMedium;
-            $this->pictureMedium = null;
+        if (isset($this->picture)) {
+            $this->temp = $this->picture;
+            $this->picture = null;
         } else {
-            $this->pictureMedium = 'initial';
+            $this->picture = 'initial';
         }
     }
 
@@ -545,16 +479,16 @@ class Article
 
     public function getAbsolutePath()
     {
-        return null === $this->pictureMedium
+        return null === $this->picture
             ? null
-            : $this->getUploadRootDir().'/'.$this->pictureMedium;
+            : $this->getUploadRootDir().'/'.$this->picture;
     }
 
     public function getWebPath()
     {
-        return null === $this->pictureMedium
+        return null === $this->picture
             ? null
-            : $this->getUploadDir().'/'.$this->pictureMedium;
+            : $this->getUploadDir().'/'.$this->picture;
     }
 
     protected function getUploadRootDir()
@@ -564,7 +498,7 @@ class Article
 
     protected function getUploadDir()
     {
-        return 'images';
+        return 'media/posts';
     }
 
     /**
@@ -575,7 +509,7 @@ class Article
     {
         if (null !== $this->getFile()) {
             $filename = sha1(uniqid(mt_rand(), true));
-            $this->pictureMedium = $filename.'.'.$this->getFile()->guessExtension();
+            $this->picture = $filename.'.'.$this->getFile()->guessExtension();
         }
     }
 
@@ -589,10 +523,13 @@ class Article
             return;
         }
 
-        $this->getFile()->move($this->getUploadRootDir(), $this->pictureMedium);
+        $this->getFile()->move($this->getUploadRootDir(), $this->picture);
 
         if (isset($this->temp)) {
             unlink($this->getUploadRootDir().'/'.$this->temp);
+
+            $this->clearCache($this->getUploadDir().'/'.$this->temp);
+
             $this->temp = null;
         }
         $this->file = null;
@@ -606,7 +543,16 @@ class Article
         $file = $this->getAbsolutePath();
         if ($file) {
             unlink($file);
+
+            $this->clearCache($this->getWebPath());
         }
+    }
+
+    public function clearCache($path)
+    {
+        $kernel = $GLOBALS['kernel'];
+        $cacheManager = $kernel->getContainer()->get('liip_imagine.cache.manager');
+        $cacheManager->remove($path);
     }
 
     /**

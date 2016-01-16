@@ -1,8 +1,7 @@
 AppBundle\Entity\Article:
   article{1..100}:
     title (unique): <word()>
-    pictureMedium: "images/<picture()>-med.jpg"
-    pictureBig: "images/<picture()>.jpg"
+    picture: "<picture()>.jpg"
     text: <text($maxNbChars = 500)>
     user: @user*
     category: 1x @category*
