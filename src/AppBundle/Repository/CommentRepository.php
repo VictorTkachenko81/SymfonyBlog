@@ -43,4 +43,12 @@ class CommentRepository extends EntityRepository
 
         return new PaginatorWithPages($query, $fetchJoinCollection = true);
     }
+
+    public function getCountComments()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id) as countComments')
+            ->getQuery()
+            ->getSingleResult();
+    }
 }

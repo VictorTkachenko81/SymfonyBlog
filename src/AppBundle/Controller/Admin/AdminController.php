@@ -26,7 +26,21 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        return [];
+        $em = $this->getDoctrine()->getManager();
+        $countArticles = $em->getRepository("AppBundle:Article")
+            ->getCountArticles();
+
+        $countComments = $em->getRepository("AppBundle:Comment")
+            ->getCountComments();
+
+        $countUsers = $em->getRepository("AppBundle:User")
+            ->getCountUsers();
+
+        return [
+            'countArticles' => $countArticles['countArticles'],
+            'countComments' => $countComments['countComments'],
+            'countUsers'    => $countUsers['countUsers'],
+        ];
     }
 
     /**
