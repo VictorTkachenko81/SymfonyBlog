@@ -5,5 +5,7 @@
     <div class="alert alert-warning" role="alert">
         <strong>Attention!</strong> {{ message }}
     </div>
-    {{ form(form) }}
+    {% if form is defined and form != '' %}
+        {{ form(form) }}
+    {% endif %}
 {% endblock content %}

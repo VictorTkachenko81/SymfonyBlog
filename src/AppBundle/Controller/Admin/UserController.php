@@ -39,54 +39,8 @@ class UserController extends Controller
         $users = $em->getRepository('AppBundle:User')
             ->findAll();
 
-        $form = $this->createFormBuilder($users)
-            ->setAction($this->generateUrl('usersAdmin'))
-            ->setMethod('POST')
-            ->add('users', ChoiceType::class, array(
-                    'choices'           => $users,
-                    'choices_as_values' => true,
-                    'expanded'          => true,
-                    'multiple'          => true,
-                    'choice_value'      => 'id',
-                    'label'             => false,
-                    'choice_label'      => 'id',
-                )
-            )
-            ->add('delete', SubmitType::class, array(
-                    'label'     => 'Remove',
-                    'attr'      => [
-                        'class' => 'btn btn-xs btn-danger'
-                    ],
-                )
-            )
-            ->getForm();
-
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                foreach ($data['users'] as $user) {
-                    $em->remove($user);
-                }
-
-                try {
-                    $em->flush();
-                } catch (\Exception $e) {
-                    return $this->render(
-                        'AppBundle:admin:failure.html.twig',
-                        array(
-                            'message' => 'Deleting record is failed. Because record has relation to other records or another reasons.',
-                        )
-                    );
-                }
-
-                return $this->redirectToRoute('usersAdmin');
-            }
-        }
-
         return [
             'users'  => $users,
-            'delete' => $form->createView(),
         ];
     }
 
@@ -142,4 +96,66 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @Route("/user/delete/{id}", name="userDelete",
+     *     requirements={
+     *      "id": "\d+"
+     *     })
+     * @Method({"GET", "POST"})
+     * @Template("AppBundle:admin/form:delete.html.twig")
+     *
+     * @return Response
+     */
+    public function deleteUserAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($id);
+
+        $countArticles = count($user->getArticles());
+        $countComments = count($user->getComments());
+
+        $message = 'You want to delete user "' . $user->getName() . '" (id: ' . $id . '). ';
+        $message .= 'Related records: articles (count: ' . $countArticles . '), ';
+        $message .= 'comments (count: ' . $countComments . '). ';
+
+        if ($countArticles == 0 or $countComments == 0) {
+            $message .= 'Are you sure, you want to continue?';
+
+            $form = $this->createFormBuilder($user)
+                ->setAction($this->generateUrl('userDelete', ['id' => $id]))
+                ->setMethod('POST')
+                ->add('delete', SubmitType::class, array(
+                        'label'     => 'Continue',
+                        'attr'      => [
+                            'class' => 'btn btn-default'
+                        ],
+                    )
+                )
+                ->getForm();
+
+            if ($request->getMethod() == 'POST') {
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $em->remove($user);
+                    $em->flush();
+
+                    return $this->redirectToRoute('usersAdmin');
+                }
+            }
+
+            $renderedForm = $form->createView();
+        }
+        else {
+            $message .= 'You must to delete related records before.';
+            $renderedForm = '';
+        }
+
+        return [
+            'message' => $message,
+            'form'    => $renderedForm,
+        ];
+    }
 }
