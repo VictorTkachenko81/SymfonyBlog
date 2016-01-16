@@ -39,54 +39,8 @@ class RoleController extends Controller
         $roles = $em->getRepository('AppBundle:Role')
             ->findAll();
 
-        $form = $this->createFormBuilder($roles)
-            ->setAction($this->generateUrl('rolesAdmin'))
-            ->setMethod('POST')
-            ->add('roles', ChoiceType::class, array(
-                    'choices'           => $roles,
-                    'choices_as_values' => true,
-                    'expanded'          => true,
-                    'multiple'          => true,
-                    'choice_value'      => 'id',
-                    'label'             => false,
-                    'choice_label'      => 'id',
-                )
-            )
-            ->add('delete', SubmitType::class, array(
-                    'label'     => 'Remove',
-                    'attr'      => [
-                        'class' => 'btn btn-xs btn-danger'
-                    ],
-                )
-            )
-            ->getForm();
-
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                foreach ($data['roles'] as $role) {
-                    $em->remove($role);
-                }
-
-                try {
-                    $em->flush();
-                } catch (\Exception $e) {
-                    return $this->render(
-                        'AppBundle:admin:failure.html.twig',
-                        array(
-                            'message' => 'Deleting record is failed. Because record has relation to other records or another reasons.',
-                        )
-                    );
-                }
-
-                return $this->redirectToRoute('rolesAdmin');
-            }
-        }
-
         return [
             'roles'  => $roles,
-            'delete' => $form->createView(),
         ];
     }
 
@@ -142,4 +96,64 @@ class RoleController extends Controller
         ];
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @Route("/role/delete/{id}", name="roleDelete",
+     *     requirements={
+     *      "id": "\d+"
+     *     })
+     * @Method({"GET", "POST"})
+     * @Template("AppBundle:admin/form:delete.html.twig")
+     *
+     * @return Response
+     */
+    public function deleteRoleAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $role = $em->getRepository('AppBundle:Role')
+            ->find($id);
+
+        $countUsers = count($role->getUsers());
+
+        $message = 'You want to delete role "' . $role->getName() . '" (id: ' . $id . '). ';
+        $message .= 'Related records: users (count: ' . $countUsers . '). ';
+
+        if ($countUsers == 0) {
+            $message .= 'Are you sure, you want to continue?';
+
+            $form = $this->createFormBuilder($role)
+                ->setAction($this->generateUrl('roleDelete', ['id' => $id]))
+                ->setMethod('POST')
+                ->add('delete', SubmitType::class, array(
+                        'label'     => 'Continue',
+                        'attr'      => [
+                            'class' => 'btn btn-default'
+                        ],
+                    )
+                )
+                ->getForm();
+
+            if ($request->getMethod() == 'POST') {
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $em->remove($role);
+                    $em->flush();
+
+                    return $this->redirectToRoute('rolesAdmin');
+                }
+            }
+
+            $renderedForm = $form->createView();
+        }
+        else {
+            $message .= 'You must to delete related records before.';
+            $renderedForm = '';
+        }
+
+        return [
+            'message' => $message,
+            'form'    => $renderedForm,
+        ];
+    }
 }

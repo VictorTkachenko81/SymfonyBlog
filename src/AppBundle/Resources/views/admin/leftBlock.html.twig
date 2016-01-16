@@ -15,19 +15,19 @@
         <a href="{{ url('commentsAdmin') }}">Comments</a>
     </li>
     <li class="list-group-item has-submenu {% if app.request.attributes.get('_route')
-        in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit'] %}active{% endif %}">
+        in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit', 'roleDelete'] %}active{% endif %}">
 
         <a href="#Users" class="submenu-toggle" data-toggle="collapse" data-parent="sidebar-nav">Users</a>
         <ul id="Users"
             class="list-unstyled submenu collapse
-                {% if app.request.attributes.get('_route') in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit'] %}
+                {% if app.request.attributes.get('_route') in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit', 'roleDelete'] %}
                     in
                 {% endif %}">
 
             <li {% if app.request.attributes.get('_route') in ['usersAdmin', 'userEdit', 'userDelete'] %}class="active"{% endif %}>
                 <a href="{{ url('usersAdmin') }}">Users</a>
             </li>
-            <li {% if app.request.attributes.get('_route') in ['rolesAdmin', 'roleEdit'] %}class="active"{% endif %}>
+            <li {% if app.request.attributes.get('_route') in ['rolesAdmin', 'roleEdit', 'roleDelete'] %}class="active"{% endif %}>
                 <a href="{{ url('rolesAdmin') }}">Role</a>
             </li>
         </ul>
