@@ -1,0 +1,26 @@
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title pull-left">BLOG</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('homepage') }}">Home</a></li>
+            <li class="active">Blog</li>
+            {% if app.request.attributes.get('_route') == 'showArticle' %}
+                <li class="active">{{ app.request.attributes.get('slug') }}</li>
+            {% elseif app.request.attributes.get('_route') == 'sortArticles' %}
+                {% if app.request.attributes.get('sortBy') == 'category' %}
+                    <li class="active">Category</li>
+                    <li class="active">{{ app.request.attributes.get('param') }}</li>
+                {% elseif app.request.attributes.get('sortBy') == 'tag' %}
+                    <li class="active">Tag</li>
+                    <li class="active">{{ app.request.attributes.get('param') }}</li>
+                {% elseif app.request.attributes.get('sortBy') == 'date' %}
+                    <li class="active">Date</li>
+                    <li class="active">{{ app.request.attributes.get('param') }}</li>
+                {% elseif app.request.attributes.get('sortBy') == 'author' %}
+                    <li class="active">Author</li>
+                    <li class="active">{{ app.request.attributes.get('param') }}</li>
+                {% endif %}
+            {% endif %}
+        </ol>
+    </div>
+</div>

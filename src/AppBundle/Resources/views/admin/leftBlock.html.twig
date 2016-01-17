@@ -1,0 +1,43 @@
+<ul id="sidebar-nav" class="sidebar-nav margin-bottom-30px">
+    <li class="list-group-item {% if app.request.attributes.get('_route') == 'mainAdmin' %}current{% endif %}">
+        <a href="{{ url('mainAdmin') }}">Main</a>
+    </li>
+    <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['articlesAdmin', 'articleEdit', 'articleDelete'] %}
+            current
+        {% endif %}">
+        <a href="{{ url('articlesAdmin') }}">Articles</a>
+    </li>
+    <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['tagsAdmin', 'tagNew'] %}
+            current
+        {% endif %}">
+        <a href="{{ url('tagsAdmin') }}">Tags</a>
+    </li>
+    <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['commentsAdmin', 'commentEdit'] %}
+            current
+        {% endif %}">
+        <a href="{{ url('commentsAdmin') }}">Comments</a>
+    </li>
+    <li class="list-group-item has-submenu {% if app.request.attributes.get('_route')
+        in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit', 'roleDelete'] %}active{% endif %}">
+
+        <a href="#Users" class="submenu-toggle" data-toggle="collapse" data-parent="sidebar-nav">Users</a>
+        <ul id="Users"
+            class="list-unstyled submenu collapse
+                {% if app.request.attributes.get('_route') in ['usersAdmin', 'userEdit', 'userDelete', 'rolesAdmin', 'roleEdit', 'roleDelete'] %}
+                    in
+                {% endif %}">
+
+            <li {% if app.request.attributes.get('_route') in ['usersAdmin', 'userEdit', 'userDelete'] %}class="active"{% endif %}>
+                <a href="{{ url('usersAdmin') }}">Users</a>
+            </li>
+            <li {% if app.request.attributes.get('_route') in ['rolesAdmin', 'roleEdit', 'roleDelete'] %}class="active"{% endif %}>
+                <a href="{{ url('rolesAdmin') }}">Role</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+{#http://demo.thedevelovers.com/business/repute-v1.2.1/ui-buttons.html#}

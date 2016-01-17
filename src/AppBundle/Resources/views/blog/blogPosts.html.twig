@@ -1,0 +1,93 @@
+{% extends 'AppBundle:blog:blog.html.twig' %}
+{% block content %}
+<div class="blog medium-thumbnail margin-bottom-30px">
+    {% for article in articles %}
+        <article class="entry-post">
+            <header class="entry-header">
+                <h2 class="entry-title">
+                    <a href="{{ url('showArticle', {'slug': article.0.slug}) }}">{{ article.0.title }}</a>
+                </h2>
+                <div class="meta-line clearfix">
+                    <div class="meta-author-category pull-left">
+                        <span class="post-author">by
+                            <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': article.0.user.slug}) }}">
+                                {{ article.0.user.name }}
+                            </a>
+                        </span>
+                        <span class="post-category">In:
+                            {% for key, category in article.0.categories %}
+                                {% if key != 0 %},{% endif %}
+                                <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
+                                    {{ category.name }}
+                                </a>
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <div class="meta-tag-comment pull-right">
+                        <span class="post-tags">
+                            <i class="fa fa-tag"></i>
+                            {% for key, tag in article.0.tags %}
+                                {% if key != 0 %},{% endif %}
+                                <a href="{{ url('sortArticles', {'sortBy': 'tag', 'param': tag.slug}) }}">
+                                    {{ tag.name }}
+                                </a>
+                            {% endfor %}
+                        </span>
+                        <span class="post-comment"><i class="fa fa-comments"></i>
+                            <a href="{{ url('showArticle', {'slug': article.0.slug}) }}#comments">
+                                {{ article.countComments }} Comments
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <figure class="featured-image">
+                            <a href="{{ url('sortArticles', {'sortBy': 'date', 'param': article.0.createdAt|date("Y-m-d")}) }}">
+                                <div class="post-date-info clearfix">
+                                    <span class="post-month">{{ article.0.createdAt|date("M") }}</span>
+                                    <span class="post-date">{{ article.0.createdAt|date("d") }}</span>
+                                    <span class="post-year">{{ article.0.createdAt|date("Y") }}</span>
+                                </div>
+                                <img src="{{ article.0.getWebPath|imagine_filter('medium_thumbnail') }}" class="img-responsive"
+                                     alt="featured-image">
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="excerpt">
+                            <p>
+                                {{ article.0.text|length > 400 ? article.0.text|slice(0, 400) ~ '...' : article.0.text }}
+                            </p>
+                            <p class="read-more">
+                                <a href="{{ url('showArticle', {'slug': article.0.slug}) }}" class="btn btn-primary">
+                                    Read More <i class="fa fa-long-arrow-right"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <hr>
+    {% endfor %}
+</div>
+
+{#<ul class="pager">#}
+    {#<li><a href="#">Previous</a></li>#}
+    {#<li><a href="#">Next</a></li>#}
+{#</ul>#}
+
+        {% if articles.countPages is defined and articles.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': articles.currentPage,
+            'pages': articles.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

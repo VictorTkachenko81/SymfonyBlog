@@ -1,0 +1,12 @@
+<div class="widget">
+    <h4 class="widget-title">TAGS</h4>
+    <ul class="list-inline tag-list">
+        {% for tag in tags %}
+            <li><a href="{{ url('sortArticles', {'sortBy': 'tag', 'param': tag.0.slug}) }}">
+                    {{ tag.0.name }}
+                    <span class="badge inverse">{{ tag.countArticles }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

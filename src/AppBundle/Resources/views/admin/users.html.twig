@@ -1,0 +1,78 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+
+{% block content %}
+
+    <h2 class="section-heading">Users</h2>
+
+    <p style="text-align: right;">
+        <a class="btn btn-sm btn-default" href="{{ url('userEdit', {'action': 'new'}) }}" role="button" id="show_add_form">
+            Add new user
+        </a>
+    </p>
+
+    <div id="formBlock"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-squad">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Created</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if users.query.firstResult is defined %}
+                {% set first = users.query.firstResult %}
+            {% else %}
+                {% set first = 0 %}
+            {% endif %}
+
+            {% for key, user in users %}
+                <tr>
+                    <td>{{ first + key + 1 }}</td>
+                    <td class="comments">
+                    {% if user.photo %}
+                        <img src="{{ asset(user.getWebPath|imagine_filter('user_thumbnail')) }}" class="avatar" alt="avatar">
+                    {% endif %}
+                    </td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.role.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>{{ user.createdAt|date("M d, Y") }}</td>
+                    <td>
+                        <a class="edit" href="{{ url('userEdit', {'action': 'edit', 'id': user.id}) }}">
+                            edit
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete" href="{{ url('userDelete', {'id': user.id}) }}">
+                            delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {% if users.countPages is defined and users.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': users.currentPage,
+            'pages': users.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

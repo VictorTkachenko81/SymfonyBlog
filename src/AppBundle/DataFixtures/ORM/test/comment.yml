@@ -1,0 +1,6 @@
+AppBundle\Entity\Comment:
+  review{1}:
+    text: 'Text comment'
+    rating: '5'
+    user: @user1
+    article: @article*

@@ -1,0 +1,84 @@
+<div class="widget">
+    <div class="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#content-popular" aria-controls="content-popular" role="tab" data-toggle="tab">
+                    POPULAR
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#content-recents" aria-controls="content-recents" role="tab" data-toggle="tab">
+                    RECENTS
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#content-recent-comments" aria-controls="content-recent-comments" role="tab" data-toggle="tab">
+                    <i class="fa fa-comments"></i>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="content-popular" class="tab-pane fade in active" role="tabpanel">
+                <ul class="list-unstyled blogposts popular">
+                    {% for popularArticle in popularArticles %}
+                        <li>
+                            <h4 class="post-title">
+                                <a href="{{ url('showArticle', {'slug': popularArticle.0.slug}) }}">
+                                    <i class="fa fa-star-o"></i> {{ popularArticle.rating|round(1) }} {{ popularArticle.0.title }}
+                                </a></h4>
+                            <span class="text-muted">
+                                {{ popularArticle.0.createdAt|date("M d, Y") }} | by {{ popularArticle.0.user.name }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="content-recents" class="tab-pane fade" role="tabpanel">
+                <ul class="list-unstyled blogposts latest">
+                    {% for recentArticle in recentArticles %}
+                        <li>
+                            <h4 class="post-title">
+                                <a href="{{ url('showArticle', {'slug': recentArticle.slug}) }}">
+                                    {{ recentArticle.title }}
+                                </a></h4>
+                            <span class="text-muted">
+                                {{ recentArticle.createdAt|date("M d, Y") }} | by {{ recentArticle.user.name }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="content-recent-comments" class="tab-pane fade" role="tabpanel">
+                <ul class="list-unstyled recent-comments">
+                    {% for recentComment in recentComments %}
+                        <li>
+                            <div class="media">
+                                <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': recentComment.user.slug}) }}" class="media-left">
+                                    {% if recentComment.user.photo %}
+                                        <img src="{{ asset(recentComment.user.getWebPath|imagine_filter('user_thumbnail')) }}" class="img-circle" alt="Avatar">
+                                    {% else %}
+                                        <span class="avatar anonymous"><i class="fa fa-user"></i></span>
+                                    {% endif %}
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': recentComment.user.slug}) }}">
+                                            {{ recentComment.user.name }}
+                                        </a>
+                                        in
+                                        <a href="{{ url('showArticle', {'slug': recentComment.article.slug}) }}">
+                                            {{ recentComment.article.title }}
+                                        </a>
+                                    </h4>
+                                    <p class="text-muted">
+                                        {{ recentComment.text|length > 100 ? recentComment.text|slice(0, 100) ~ '...' : recentComment.text }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

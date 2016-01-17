@@ -1,0 +1,44 @@
+<div style="text-align: center">
+    <ul class="pagination">
+        {% if page > 1 %}
+            <li><a href="{{ url(route, params|merge({'page': page - 1})) }}">&laquo;</a></li>
+        {% endif %}
+
+        {% if pages > 10 %}
+            {% if page < 6 %}
+                {% set pageFirst = 1 %}
+                {% set pageLast = 11 %}
+            {% else %}
+                {% if (page + 5) < pages %}
+                    {% set pageFirst = page - 5 %}
+                    {% set pageLast = page + 5 %}
+                {% else %}
+                    {% set pageFirst = pages - 10 %}
+                    {% set pageLast = pages %}
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% set pageFirst = 1 %}
+            {% set pageLast = pages %}
+        {% endif %}
+
+        {% for i in pageFirst..pageLast %}
+            {% if i == page %}
+                <li class="active" id="page{{ i }}">
+                    <a href="{{ url(route, params|merge({'page': i})) }}" class="loadPage">
+                        {{ i }}
+                    </a>
+                </li>
+            {% else %}
+                <li id="page{{ i }}">
+                    <a href="{{ url(route, params|merge({'page': i})) }}" class="loadPage">
+                        {{ i }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if page < pages %}
+            <li><a href="{{ url(route, params|merge({'page': page + 1})) }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+</div>

@@ -35,6 +35,14 @@
                 <directory>../src/*/*Bundle/Tests</directory>
                 <directory>../src/*/Bundle/*Bundle/Resources</directory>
                 <directory>../src/*/Bundle/*Bundle/Tests</directory>
+                <directory>../src/AppBundle/DataFixtures</directory>
+                <directory>../src/AppBundle/Entity</directory>
+                <directory>../src/AppBundle/Form</directory>
+                <directory>../src/AppBundle/Model</directory>
+                <directory>../src/AppBundle/Repository</directory>
+                <directory>../src/AppBundle/Resources</directory>
+                <directory>../src/AppBundle/Tests</directory>
+                <directory>../src/AppBundle/Twig</directory>
             </exclude>
         </whitelist>
     </filter>

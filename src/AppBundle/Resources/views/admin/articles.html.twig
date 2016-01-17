@@ -1,0 +1,93 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+
+{% block content %}
+
+    <h2 class="section-heading">Articles
+        ({{ articles.count }})
+    </h2>
+
+    <p style="text-align: right;">
+        <a class="btn btn-sm btn-default" href="{{ url('articleEdit', {'action': 'new'}) }}" role="button" id="show_add_form">
+            Add new article
+        </a>
+    </p>
+
+    <div id="formBlock"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-squad">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Article</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Comments</th>
+                <th>Created</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if articles.query.firstResult is defined %}
+                {% set first = articles.query.firstResult %}
+            {% else %}
+                {% set first = 0 %}
+            {% endif %}
+
+
+            {% for key, article in articles %}
+                <tr>
+                    <td>{{ first + key + 1 }}</td>
+                    <td>
+                        <a href="{{ url('showArticle', {'slug': article.0.slug}) }}">{{ article.0.title }}</a>
+                    </td>
+                    <td>
+                        {% for key, category in article.0.categories %}
+                            {% if key != 0 %},{% endif %}
+                            <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': article.0.user.slug}) }}">
+                            {{ article.0.user.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url('showArticle', {'slug': article.0.slug}) }}#comments">
+                            {{ article.countComments }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ article.0.createdAt|date("M d, Y") }}
+                    </td>
+                    <td>
+                        <a class="edit" href="{{ url('articleEdit', {'action': 'edit', 'id': article.0.id}) }}">
+                            edit
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete" href="{{ url('articleDelete', {'id': article.0.id}) }}">
+                            delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if articles.countPages is defined and articles.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': articles.currentPage,
+            'pages': articles.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

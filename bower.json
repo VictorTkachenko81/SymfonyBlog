@@ -1,0 +1,23 @@
+{
+  "name": "html",
+  "description": "Symfony Blog",
+  "main": "index.js",
+  "authors": [
+    "Victor Tkachenko"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://github.com/VictorTkachenko81/SymfonyBlog",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}

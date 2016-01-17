@@ -1,0 +1,81 @@
+{% extends 'AppBundle:admin:admin.html.twig' %}
+
+{% block content %}
+
+    <h2 class="section-heading">
+        Comments ({{ comments.count }})
+    </h2>
+
+    <div id="formBlock"></div>
+
+    {{ form_start(delete) }}
+    <div class="table-responsive">
+        <table class="table table-striped table-squad">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Article</th>
+                <th>Author</th>
+                <th>Rating</th>
+                <th>Created</th>
+                <th>Edit</th>
+                <th style="width: 30px; text-align: center;">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if comments.query.firstResult is defined %}
+                {% set first = comments.query.firstResult %}
+            {% else %}
+                {% set first = 0 %}
+            {% endif %}
+
+            {% for key, comment in comments %}
+                <tr>
+                    <td>{{ first + key + 1 }}</td>
+                    <td>
+                        <a href="{{ url('showArticle', {'slug': comment.article.slug}) }}">{{ comment.article.title }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': comment.user.slug}) }}">
+                            {{ comment.user.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ comment.rating }} <i class="fa fa-star-o"></i>
+                    </td>
+                    <td>
+                        {{ comment.createdAt|date("M d, Y") }}
+                    </td>
+                    <td>
+                        <a class="edit" href="{{ url('commentEdit', {'action': 'edit', 'id': comment.id}) }}">
+                            edit
+                        </a>
+                    </td>
+                    <td style="text-align: center">
+                        {{ form_widget(attribute(delete.comments, key)) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="6"></td>
+                <td style="text-align: center">
+                    {{ form_end(delete) }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    {% if comments.countPages is defined and comments.countPages > 1 %}
+        {{ include('AppBundle::pagination.html.twig', {
+            'route': app.request.attributes.get('_route'),
+            'params': app.request.attributes.get('_route_params'),
+            'page': comments.currentPage,
+            'pages': comments.countPages
+        })
+        }}
+    {% endif %}
+
+{% endblock content %}

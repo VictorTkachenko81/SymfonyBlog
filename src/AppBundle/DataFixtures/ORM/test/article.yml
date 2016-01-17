@@ -1,0 +1,8 @@
+AppBundle\Entity\Article:
+  article{1}:
+    title (unique): 'Test title'
+    picture: "balloon.jpg"
+    text: 'Test article'
+    user: @user1
+    category: 1x @category*
+    tag: 2x @tag*

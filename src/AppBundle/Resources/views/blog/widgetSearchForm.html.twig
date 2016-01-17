@@ -1,0 +1,10 @@
+<div class="widget">
+    {{ form_start(form, { 'method': 'POST', 'action': url('searchArticles')}) }}
+        <div class="input-group">
+            {{ form_widget(form.param, { 'attr': {'class': 'form-control'} }) }}
+            <span class="input-group-btn">
+                {{ form_widget(form.search, { 'attr': {'class': 'btn btn-primary'} }) }}
+			</span>
+        </div>
+    {{ form_end(form) }}
+</div>

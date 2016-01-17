@@ -1,0 +1,7 @@
+AppBundle\Entity\User:
+  user{1}:
+    name (unique): 'User name'
+    photo: "user1.png"
+    email: 'email@gmail.com'
+    password: 'password'
+    role: @role1

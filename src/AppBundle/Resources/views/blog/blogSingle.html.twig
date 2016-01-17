@@ -1,0 +1,100 @@
+{% extends 'AppBundle:blog:blog.html.twig' %}
+
+{% block content %}
+    <!-- BLOG SINGLE -->
+    <div class="blog single full-thumbnail">
+        <!-- blog post -->
+        <article class="entry-post">
+            <header class="entry-header">
+                <h2 class="entry-title">
+                    <a href="#">{{ article.title }}</a>
+                </h2>
+                <div class="meta-line clearfix">
+                    <div class="meta-author-category pull-left">
+                    <span class="post-author">by
+                        <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': article.user.slug}) }}">
+                            {{ article.user.name }}
+                        </a>
+                    </span>
+                    <span class="post-category">
+                        In:
+                        {% for key, category in article.categories %}
+                            {% if key != 0 %},{% endif %}
+                            <a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.slug}) }}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </span>
+                    </div>
+                    <div class="meta-tag-comment pull-right">
+                    <span class="post-tags">
+                        <i class="fa fa-tag"></i>
+                        {% for key, tag in article.tags %}
+                            {% if key != 0 %},{% endif %}
+                            <a href="{{ url('sortArticles', {'sortBy': 'tag', 'param': tag.slug}) }}">
+                                {{ tag.name }}
+                            </a>
+                        {% endfor %}
+                    </span>
+                    </div>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <figure class="featured-image">
+                    <div class="post-date-info clearfix">
+                        <span class="post-month">{{ article.createdAt|date("M") }}</span>
+                        <span class="post-date">{{ article.createdAt|date("d") }}</span>
+                        <span class="post-year">{{ article.createdAt|date("Y") }}</span>
+                    </div>
+                    <img src="{{ asset(article.getWebPath|imagine_filter('full_thumbnail')) }}" class="img-responsive" alt="featured-image">
+                </figure>
+                <div class="excerpt">{{ article.text }}</div>
+            </div>
+        </article>
+        <!-- end blog post -->
+        <hr>
+
+        <!-- comments -->
+        <article class="comments" id="comments">
+            {{ render( controller('AppBundle:Blog/Blog:showArticleComments', {'slug': app.request.attributes.get('slug')})) }}
+        </article>
+        <!-- end comments -->
+        <hr>
+
+        <!-- comment form -->
+        <section class="comment-form margin-bottom" id="formBlock">
+            <h3 class="section-heading">Leave A Comment</h3>
+            <p class="heading">Required fields are marked *. Your email will not be published or shared.</p>
+            {{ render( controller('AppBundle:Blog/Blog:newComment', {'slug': app.request.attributes.get('slug')})) }}
+        </section>
+        <!-- end comment form -->
+
+    </div>
+    <!-- END BLOG SINGLE -->
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/ajaxSubmit.js') }}"></script>
+
+    <script>
+        $( document ).ready(function() {
+            $("#comments").on( "click", ".pagination a", function ( event ) {
+                event.preventDefault();
+                $.ajax({
+                    url: $( this ).attr("href"),
+                    dataType: "html",
+                    method: "GET",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (html) {
+                    $("#comments").html(html);
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

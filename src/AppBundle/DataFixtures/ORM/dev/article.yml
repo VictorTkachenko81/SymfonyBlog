@@ -1,0 +1,9 @@
+AppBundle\Entity\Article:
+  article{1..100}:
+    title (unique): <word()>
+    picture: "<picture()>.jpg"
+    text: <text($maxNbChars = 500)>
+    user: @user*
+    category: 1x @category*
+    tag: 2x @tag*
+    createdAt: <dateTimeBetween($startDate = '-1 years', $endDate = 'now')>

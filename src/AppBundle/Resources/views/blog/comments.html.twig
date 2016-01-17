@@ -1,0 +1,37 @@
+
+    <h3 class="section-heading">Comments ({{ comments.count }})</h3>
+    <ul class="media-list">
+        <li class="media">
+
+            {% for key, comment in comments %}
+                <div class="media {% if comment.article.user.slug == comment.user.slug %}comment-by-author{% endif %}">
+                    <a href="#" class="media-left">
+                        {% if comment.user.photo %}
+                            <img src="{{ asset(comment.user.getWebPath|imagine_filter('user_thumbnail')) }}" class="avatar" alt="avatar">
+                        {% else %}
+                            <span class="avatar anonymous"><i class="fa fa-user"></i></span>
+                        {% endif %}
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading comment-author"><a href="#">{{ comment.user.name }}</a></h4><span
+                                class="timestamp text-muted">{{ comment.createdAt|date("M d, Y H:i:s") }}</span>
+                        <p>{{ comment.text }}</p>
+                        <p><i class="fa fa-star-o"></i> {{ comment.rating }}</p>
+                        <p><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
+                        <hr>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if comments.countPages > 1 %}
+                {{ include('AppBundle::pagination.html.twig', {
+                    'route': 'articleComments',
+                    'params': {'slug': app.request.attributes.get('slug')},
+                    'page': comments.currentPage,
+                    'pages': comments.countPages
+                })
+                }}
+            {% endif %}
+
+        </li>
+    </ul>

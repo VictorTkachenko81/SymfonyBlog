@@ -65,3 +65,30 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            sluggable: true
+            timestampable: true
+
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        medium_thumbnail:
+            quality: 75
+            filters:
+                thumbnail: { size: [480, 300], mode: outbound }
+        full_thumbnail:
+            quality: 75
+            filters:
+                thumbnail: { size: [1400, 610], mode: inset }
+        user_thumbnail:
+            quality: 100
+            filters:
+                thumbnail: { size: [64, 64], mode: outbound }
