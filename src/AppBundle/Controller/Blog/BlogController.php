@@ -183,7 +183,6 @@ class BlogController extends Controller
                 $em->persist($comment);
                 $em->flush();
 
-//                return $this->redirectToRoute('showArticle', ['slug' => $slug]);
                 return $this->redirectToRoute('success');
             }
         }
@@ -226,5 +225,20 @@ class BlogController extends Controller
     public function successAction()
     {
         return [];
+    }
+
+    /**
+     * @Route("/search_form_render", name="searchFormRender")
+     * @Template("AppBundle:blog:widgetSearchForm.html.twig")
+     *
+     * @return Response
+     */
+    public function createSearchFormAction()
+    {
+        $form = $this->createForm(SearchType::class);
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }

@@ -1,6 +1,4 @@
-{{ searchForm() }}
-
-{#{{ include( 'AppBundle:blog:widgetSearchForm.html.twig' ) }}#}
+{{ render( controller('AppBundle:Blog/Blog:createSearchForm')) }}
 
 {{ include( 'AppBundle:blog:widgetContactInfo.html.twig' ) }}
 
