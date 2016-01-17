@@ -31,6 +31,16 @@ class AdminControllerTest extends WebTestCase
         $this->assertEquals(2, $crawler->filter('tr')->count());
     }
 
+    public function testTags(){
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/admin/tags');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertContains('Tags', $crawler->filter('h2')->text());
+        $this->assertEquals(3, $crawler->filter('tr')->count());
+    }
+
     public function testComments(){
         $client = static::createClient();
 

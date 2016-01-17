@@ -40,7 +40,6 @@ class Tag
      * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=60, unique=true)
      *
-     * @Assert\NotBlank()
      * @Assert\Length(max = 60)
      */
     private $slug;

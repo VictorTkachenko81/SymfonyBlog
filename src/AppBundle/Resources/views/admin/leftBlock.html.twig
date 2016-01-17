@@ -9,6 +9,12 @@
         <a href="{{ url('articlesAdmin') }}">Articles</a>
     </li>
     <li class="list-group-item
+        {% if app.request.attributes.get('_route') in ['tagsAdmin', 'tagNew'] %}
+            current
+        {% endif %}">
+        <a href="{{ url('tagsAdmin') }}">Tags</a>
+    </li>
+    <li class="list-group-item
         {% if app.request.attributes.get('_route') in ['commentsAdmin', 'commentEdit'] %}
             current
         {% endif %}">
