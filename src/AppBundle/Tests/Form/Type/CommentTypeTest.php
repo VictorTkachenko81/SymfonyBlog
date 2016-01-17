@@ -22,12 +22,9 @@ class CommentTypeTest extends TypeTestCase
 
         $form = $this->factory->create(CommentType::class);
 
-//        $object = TestObject::fromArray($formData);
-
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
-//        $this->assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
