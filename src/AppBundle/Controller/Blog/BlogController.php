@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Blog;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Form\Type\CommentType;
+use AppBundle\Form\Type\SearchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BlogController extends Controller
 {
 
-    //ToDo: fix page over limit
     /**
      * @param $page
      * @Method("GET")
@@ -63,8 +63,6 @@ class BlogController extends Controller
         ];
     }
 
-    //ToDo: fix page over limit
-    //ToDo: fix error 500 when sorting with undefined params and page 0
     /**
      * @param $sortBy
      * @param $param
@@ -107,6 +105,34 @@ class BlogController extends Controller
 
     /**
      * @param Request $request
+     * @Method("POST")
+     * @Route("/search", name="searchArticles")
+     * @Template("AppBundle:blog:blogPosts.html.twig")
+     *
+     * @return Response
+     */
+    public function searchAction(Request $request)
+    {
+        $form = $this->createForm(SearchType::class);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $articles = $em->getRepository("AppBundle:Article")
+                ->getArticlesSorted('search', $data['param'], 1, 100);
+
+            return [
+                'articles' => $articles,
+            ];
+        }
+        else {
+            return [];
+        }
+    }
+
+    /**
+     * @param Request $request
      * @param $slug
      * @Route("/newCommentFor/{slug}", name="commentForm")
      * @Template("AppBundle:blog:commentForm.html.twig")
@@ -127,7 +153,7 @@ class BlogController extends Controller
             'method' => Request::METHOD_POST,
         ]);
 
-        //ToDo: fix check isUserAnonymous
+        //ToDo: check isUserAnonymous
         if ($user = 'anonymous') {
             $form
                 ->add('user', EntityType::class, array(

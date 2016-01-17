@@ -80,7 +80,7 @@
     {#<li><a href="#">Next</a></li>#}
 {#</ul>#}
 
-    {% if articles.countPages > 1 %}
+        {% if articles.countPages is defined and articles.countPages > 1 %}
         {{ include('AppBundle::pagination.html.twig', {
             'route': app.request.attributes.get('_route'),
             'params': app.request.attributes.get('_route_params'),

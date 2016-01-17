@@ -9,7 +9,11 @@
 namespace AppBundle\Twig;
 
 
+use AppBundle\Form\Type\SearchType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactory;
 
 class AppExtension extends \Twig_Extension
 {
@@ -37,6 +41,12 @@ class AppExtension extends \Twig_Extension
             ),
             new \Twig_SimpleFunction('categoriesList',
                 array($this, 'getCategories'),
+                array(
+                    'needs_environment' => true,
+                    'is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFunction('searchForm',
+                array($this, 'getSearchForm'),
                 array(
                     'needs_environment' => true,
                     'is_safe' => array('html'))
@@ -93,6 +103,19 @@ class AppExtension extends \Twig_Extension
             'AppBundle:blog:widgetCategories.html.twig',
             array(
                 'categories' => $categories,
+            )
+        );
+    }
+
+    public function getSearchForm(\Twig_Environment $twig)
+    {
+        $kernel = $GLOBALS['kernel'];
+        $form = $kernel->getContainer()->get('form.factory')->createBuilder(SearchType::class)->getForm();
+
+        return $twig->render(
+            'AppBundle:blog:widgetSearchForm.html.twig',
+            array(
+                'form' => $form->createView(),
             )
         );
     }

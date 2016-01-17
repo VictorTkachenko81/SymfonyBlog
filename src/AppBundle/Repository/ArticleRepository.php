@@ -93,6 +93,16 @@ class ArticleRepository extends EntityRepository
                     ->setParameter(1, $param." 00:00:00")
                     ->setParameter(2, $param." 23:59:59");
                 break;
+            case 'search':
+                $query
+                    ->where(
+                        $query->expr()->like(
+                            $query->expr()->lower('a.title'),
+                            $query->expr()->lower('?1')
+                        )
+                    )
+                    ->setParameter(1, '%'.$param.'%');
+                break;
         }
 
         $query
