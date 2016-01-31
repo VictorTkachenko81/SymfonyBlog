@@ -22,5 +22,13 @@
             <argument key="mediaHandler" type="service" id="app.media_handler"/>
         </service>
 
+        <service id="app.blog_handler"
+                 class="AppBundle\Services\BlogHandler">
+            <argument key="doctrine" type="service" id="doctrine"/>
+            <argument key="formFactory" type="service" id="form.factory"/>
+            <argument key="router" type="service" id="router"/>
+            <argument key="validator" type="service" id="validator"/>
+        </service>
+
     </services>
 </container>

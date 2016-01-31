@@ -2,17 +2,11 @@
 
 namespace AppBundle\Controller\Blog;
 
-use AppBundle\Entity\Comment;
-use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -35,9 +29,8 @@ class BlogController extends Controller
      */
     public function indexAction($page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository("AppBundle:Article")
-            ->getArticlesWithCountComment($page);
+        $blogHandler = $this->container->get('app.blog_handler');
+        $articles = $blogHandler->getArticles($page);
 
         return [
             'articles' => $articles,
@@ -54,9 +47,8 @@ class BlogController extends Controller
      */
     public function showAction($slug)
     {
-        $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository("AppBundle:Article")
-            ->getArticleWithDep($slug);
+        $blogHandler = $this->container->get('app.blog_handler');
+        $article = $blogHandler->getArticle($slug);
 
         return [
             'article' => $article,
@@ -81,22 +73,9 @@ class BlogController extends Controller
      */
     public function sortAction($sortBy, $param, $page = 1)
     {
-        if ($sortBy == 'date') {
-            $dateConstraint = new Assert\Date();
-            $dateConstraint->message = 'Invalid date';
-
-            $errorList = $this->get('validator')->validate($param, $dateConstraint);
-
-            if (0 !== count($errorList)) {
-                throw $this->createNotFoundException(
-                    $errorMessage = $errorList[0]->getMessage()
-                );
-            }
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository("AppBundle:Article")
-            ->getArticlesSorted($sortBy, $param, $page);
+        $blogHandler = $this->container->get('app.blog_handler');
+        if ($sortBy == 'date') $blogHandler->validate($param, new Assert\Date);
+        $articles = $blogHandler->getArticlesSorted($sortBy, $param, $page);
 
         return [
             'articles' => $articles,
@@ -113,22 +92,9 @@ class BlogController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $form = $this->createForm(SearchType::class);
+        $blogHandler = $this->container->get('app.blog_handler');
 
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $data = $form->getData();
-            $em = $this->getDoctrine()->getManager();
-            $articles = $em->getRepository("AppBundle:Article")
-                ->getArticlesSorted('search', $data['param'], 1, 100);
-
-            return [
-                'articles' => $articles,
-            ];
-        }
-        else {
-            return [];
-        }
+        return $blogHandler->searchArticles($request);
     }
 
     /**
@@ -141,55 +107,9 @@ class BlogController extends Controller
      */
     public function newCommentAction(Request $request, $slug)
     {
-        $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository("AppBundle:Article")
-            ->findOneBySlug($slug);
-        $comment = new Comment();
-        $comment->setArticle($article);
+        $blogHandler = $this->container->get('app.blog_handler');
 
-        $form = $this->createForm(CommentType::class, $comment, [
-            'em' => $em,
-            'action' => $this->generateUrl('commentForm', ['slug' => $slug]),
-            'method' => Request::METHOD_POST,
-        ]);
-
-        //ToDo: check isUserAnonymous
-        if ($user = 'anonymous') {
-            $form
-                ->add('user', EntityType::class, array(
-                    'class' => 'AppBundle:User',
-                    'choice_label' => 'name',
-                    'placeholder' => '* Choose user (remove after security)',
-                ))
-                ->add('name', TextType::class, array(
-                        'attr' => array('placeholder' => '* Name (anonymous)')
-                    )
-                )
-                ->add('email', EmailType::class, array(
-                        'attr' => array('placeholder' => '* Email (anonymous)')
-                    )
-                );
-        }
-
-        $form
-            ->add('save', SubmitType::class, array(
-                'label' => 'Submit Comment',
-                'attr' => array('class' => "btn btn-primary")
-            ));
-
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $em->persist($comment);
-                $em->flush();
-
-                return $this->redirectToRoute('success');
-            }
-        }
-
-        return [
-            'form' => $form->createView(),
-        ];
+        return $blogHandler->addComment($request, $slug);
     }
 
     /**
@@ -207,9 +127,8 @@ class BlogController extends Controller
      */
     public function showArticleCommentsAction($slug, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-        $comments = $em->getRepository("AppBundle:Comment")
-            ->getArticleComment($slug, $page, 5);
+        $blogHandler = $this->container->get('app.blog_handler');
+        $comments = $blogHandler->getComments($slug, $page);
 
         return [
             'comments' => $comments,
