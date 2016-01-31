@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Article
 {
@@ -39,7 +37,6 @@ class Article
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      *
      * @Assert\Length(max = 100)
@@ -103,7 +100,6 @@ class Article
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      *
      * @Assert\DateTime()
@@ -113,7 +109,6 @@ class Article
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="change", field={"title", "text"})
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      *
      * @Assert\DateTime()

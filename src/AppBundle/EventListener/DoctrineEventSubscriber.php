@@ -41,6 +41,9 @@ class DoctrineEventSubscriber implements EventSubscriber
                     $entity->getUploadDir()
                 )
             );
+
+            $entity->setSlug($this->slugify($entity->getTitle()));
+            $entity->setCreatedAt(new \DateTime());
         }
         if($entity instanceof User) {
 
@@ -73,6 +76,9 @@ class DoctrineEventSubscriber implements EventSubscriber
                     $entity->getUploadDir()
                 )
             );
+
+            $entity->setSlug($this->slugify($entity->getTitle()));
+            $entity->setUpdatedAt(new \DateTime());
         }
         if($entity instanceof User) {
 
@@ -111,6 +117,13 @@ class DoctrineEventSubscriber implements EventSubscriber
                 $entity->getUploadDir()
             );
         }
+    }
+
+    protected function slugify($string)
+    {
+        return preg_replace(
+            '/[^a-z0-9]/', '_', strtolower(trim(strip_tags($string)))
+        );
     }
 
 }
