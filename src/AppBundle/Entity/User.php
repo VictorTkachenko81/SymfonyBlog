@@ -434,14 +434,6 @@ class User
         return $this->photo;
     }
 
-
-    /**
-     * ***********************
-     * Upload images start
-     * ***********************
-     */
-
-
     /**
      * Sets file.
      *
@@ -468,11 +460,9 @@ class User
         return $this->file;
     }
 
-    public function getAbsolutePath()
+    public function getTemp()
     {
-        return null === $this->photo
-            ? null
-            : $this->getUploadRootDir().'/'.$this->photo;
+        return $this->temp;
     }
 
     public function getWebPath()
@@ -482,73 +472,9 @@ class User
             : $this->getUploadDir().'/'.$this->photo;
     }
 
-    protected function getUploadRootDir()
-    {
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
+    public function getUploadDir()
     {
         return 'media/users';
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        if (null !== $this->getFile()) {
-            $filename = sha1(uniqid(mt_rand(), true));
-            $this->photo = $filename.'.'.$this->getFile()->guessExtension();
-        }
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        if (null === $this->getFile()) {
-            return;
-        }
-
-        $this->getFile()->move($this->getUploadRootDir(), $this->photo);
-
-        if (isset($this->temp)) {
-            unlink($this->getUploadRootDir().'/'.$this->temp);
-
-            $this->clearCache($this->getUploadDir().'/'.$this->temp);
-
-            $this->temp = null;
-        }
-        $this->file = null;
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        $file = $this->getAbsolutePath();
-        if ($file) {
-            unlink($file);
-
-            $this->clearCache($this->getWebPath());
-        }
-    }
-
-    public function clearCache($path)
-    {
-        $kernel = $GLOBALS['kernel'];
-        $cacheManager = $kernel->getContainer()->get('liip_imagine.cache.manager');
-        $cacheManager->remove($path);
-    }
-
-    /**
-     * ***********************
-     * Upload images end
-     * ***********************
-     */
 }

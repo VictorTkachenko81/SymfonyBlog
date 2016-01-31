@@ -427,7 +427,7 @@ class Article
      *
      * @return Article
      */
-    public function setPictureSmall($picture)
+    public function setPicture($picture)
     {
         $this->picture = $picture;
 
@@ -443,13 +443,6 @@ class Article
     {
         return $this->picture;
     }
-    
-    
-    /**
-     * ***********************
-     * Upload images start
-     * ***********************
-     */
 
     /**
      * Sets file.
@@ -477,11 +470,9 @@ class Article
         return $this->file;
     }
 
-    public function getAbsolutePath()
+    public function getTemp()
     {
-        return null === $this->picture
-            ? null
-            : $this->getUploadRootDir().'/'.$this->picture;
+        return $this->temp;
     }
 
     public function getWebPath()
@@ -491,73 +482,9 @@ class Article
             : $this->getUploadDir().'/'.$this->picture;
     }
 
-    protected function getUploadRootDir()
-    {
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
+    public function getUploadDir()
     {
         return 'media/posts';
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        if (null !== $this->getFile()) {
-            $filename = sha1(uniqid(mt_rand(), true));
-            $this->picture = $filename.'.'.$this->getFile()->guessExtension();
-        }
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        if (null === $this->getFile()) {
-            return;
-        }
-
-        $this->getFile()->move($this->getUploadRootDir(), $this->picture);
-
-        if (isset($this->temp)) {
-            unlink($this->getUploadRootDir().'/'.$this->temp);
-
-            $this->clearCache($this->getUploadDir().'/'.$this->temp);
-
-            $this->temp = null;
-        }
-        $this->file = null;
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        $file = $this->getAbsolutePath();
-        if ($file) {
-            unlink($file);
-
-            $this->clearCache($this->getWebPath());
-        }
-    }
-
-    public function clearCache($path)
-    {
-        $kernel = $GLOBALS['kernel'];
-        $cacheManager = $kernel->getContainer()->get('liip_imagine.cache.manager');
-        $cacheManager->remove($path);
-    }
-
-    /**
-     * ***********************
-     * Upload images end
-     * ***********************
-     */
 }
