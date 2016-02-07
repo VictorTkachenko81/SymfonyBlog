@@ -1,0 +1,74 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <div class="shop-main register">
+        <div class="container">
+            <ol class="breadcrumb link-accent separator-arrow">
+                <li><a href="{{ url('homepage') }}" title="Home"><i class="fa fa-home"></i></a></li>
+                <li class="active">Register</li>
+            </ol>
+            <div class="account-box register-box">
+                <h1>Create an account</h1>
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                {{ form_errors(form) }}
+                    <div class="form-group">
+                        <label for="username" class="control-label sr-only">Username</label>
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                {{ form_widget(form.username) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label sr-only">Email</label>
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                {{ form_widget(form.email) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label sr-only">Password</label>
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                {{ form_widget(form.password.first) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password2" class="control-label sr-only">Repeat Password</label>
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                {{ form_widget(form.password.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="fancy-checkbox">
+                                <input type="checkbox">
+                                <span>Subscribe me to the newsletter</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="fancy-checkbox">
+                                <input type="checkbox">
+                                <span>I accept the <a href="#">Terms &amp; Agreement</a></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            {{ form_widget(form.submit) }}
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+                <p><em>Already have an account?</em> <a href="{{ url('login_route') }}"><strong>Login</strong></a></p>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

@@ -9,7 +9,7 @@
                     <a href="{{ url('mainAdmin') }}">ADMIN</a>
                 </li>
                 <li class="dropdown">
-                    <a href="#" data-toggle="dropdown">LOGIN <i class="fa fa-angle-down"></i></a>
+                    <a href="{{ url('login_route') }}" data-toggle="dropdown">LOGIN <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu" >
                         <li>
                             <div style="width: 300px; padding: 0 15px;">
@@ -48,7 +48,7 @@
                                     </div>
                                 </form>
                                 <br>
-                                <p><em>Don't have an account yet?</em> <a href="#"><strong>Sign Up</strong></a>
+                                <p><em>Don't have an account yet?</em> <a href="{{ url('register') }}"><strong>Sign Up</strong></a>
                                     <br>
                                     <em>Forgot your password?</em> <a href="#">Recover Password</a></p>
                             </div>
