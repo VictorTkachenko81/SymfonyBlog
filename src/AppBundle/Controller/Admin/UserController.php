@@ -83,6 +83,14 @@ class UserController extends Controller
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
+
+                $data = $form->getData();
+                $plainPassword = $data->getPassword();
+
+                $encoder = $this->container->get('security.password_encoder');
+                $encoded = $encoder->encodePassword(new User(), $plainPassword);
+                $user->setPassword($encoded);
+
                 $em->persist($user);
                 $em->flush();
 
