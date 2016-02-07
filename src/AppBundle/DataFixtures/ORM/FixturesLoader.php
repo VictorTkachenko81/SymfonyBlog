@@ -49,10 +49,9 @@ class LoadUserData implements FixtureInterface
     public function role($count)
     {
         $roles = [
-            'admin',
-            'moderator',
-            'user',
-            'anonymous',
+            'ROLE_ADMIN',
+            'ROLE_MODERATOR',
+            'ROLE_USER',
         ];
 
         return $roles[$count-1];

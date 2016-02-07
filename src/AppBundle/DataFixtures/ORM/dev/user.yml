@@ -1,7 +1,7 @@
 AppBundle\Entity\User:
   user{1..10}:
-    name (unique): <name()>
+    username (unique): <name()>
     photo: "<photo()>"
     email: <email()>
-    password: <password()>
-    role: @role*
+    password: '123'
+    roleObject: 1x @role*

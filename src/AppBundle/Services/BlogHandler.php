@@ -103,7 +103,7 @@ class BlogHandler
             $form
                 ->add('user', EntityType::class, array(
                     'class' => 'AppBundle:User',
-                    'choice_label' => 'name',
+                    'choice_label' => 'username',
                     'placeholder' => '* Choose user (remove after security)',
                 ))
                 ->add('name', TextType::class, array(

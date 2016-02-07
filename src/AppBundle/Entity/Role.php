@@ -35,7 +35,7 @@ class Role
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="role")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
      */
     private $users;
 

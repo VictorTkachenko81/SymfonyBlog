@@ -34,22 +34,24 @@ class DoctrineEventSubscriber implements EventSubscriber
         $entity = $args->getEntity();
 
         if($entity instanceof Article) {
-
-            $entity->setPicture(
-                $this->mediaHandler->fileUpload(
-                    $entity->getFile(),
-                    $entity->getUploadDir()
-                )
-            );
+            if($entity->getFile()){
+                $entity->setPicture(
+                    $this->mediaHandler->fileUpload(
+                        $entity->getFile(),
+                        $entity->getUploadDir()
+                    )
+                );
+            }
         }
         if($entity instanceof User) {
-
-            $entity->setPhoto(
-                $this->mediaHandler->fileUpload(
-                    $entity->getFile(),
-                    $entity->getUploadDir()
-                )
-            );
+            if($entity->getFile()){
+                $entity->setPhoto(
+                    $this->mediaHandler->fileUpload(
+                        $entity->getFile(),
+                        $entity->getUploadDir()
+                    )
+                );
+            }
         }
     }
 
@@ -61,32 +63,34 @@ class DoctrineEventSubscriber implements EventSubscriber
         $entity = $args->getEntity();
 
         if($entity instanceof Article) {
-
-            $this->mediaHandler->clearCache(
-                $entity->getTemp(),
-                $entity->getUploadDir()
-            );
-
-            $entity->setPicture(
-                $this->mediaHandler->fileUpload(
-                    $entity->getFile(),
+            if($entity->getFile()){
+                $this->mediaHandler->clearCache(
+                    $entity->getTemp(),
                     $entity->getUploadDir()
-                )
-            );
+                );
+
+                $entity->setPicture(
+                    $this->mediaHandler->fileUpload(
+                        $entity->getFile(),
+                        $entity->getUploadDir()
+                    )
+                );
+            }
         }
         if($entity instanceof User) {
-
-            $this->mediaHandler->clearCache(
-                $entity->getTemp(),
-                $entity->getUploadDir()
-            );
-
-            $entity->setPhoto(
-                $this->mediaHandler->fileUpload(
-                    $entity->getFile(),
+            if($entity->getFile()){
+                $this->mediaHandler->clearCache(
+                    $entity->getTemp(),
                     $entity->getUploadDir()
-                )
-            );
+                );
+
+                $entity->setPhoto(
+                    $this->mediaHandler->fileUpload(
+                        $entity->getFile(),
+                        $entity->getUploadDir()
+                    )
+                );
+            }
         }
     }
 

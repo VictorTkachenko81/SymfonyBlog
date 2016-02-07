@@ -21,37 +21,37 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'label' => false,
-                'attr' => array('placeholder' => '* Username')
+            ->add('username', TextType::class, array(
+                'label'         => false,
+                'attr'          => array('placeholder' => '* Username')
             ))
-            ->add('role', EntityType::class, array(
-                'class' => 'AppBundle:Role',
-                'choice_label' => 'name',
-                'label' => false,
-                'placeholder' => '* Role'
+            ->add('roleObjects', EntityType::class, array(
+                'class'         => 'AppBundle:Role',
+                'choice_label'  => 'name',
+                'placeholder'   => '* Role',
+                'multiple'      => 'true',
             ))
             ->add('file', FileType::class, array(
-                'label' => false,
-                'attr' => array('placeholder' => '* Photo')
+                'label'     => false,
+                'attr'      => array('placeholder' => '* Photo')
             ))
             ->add('email', EmailType::class, array(
-                'label' => false,
-                'attr' => array('placeholder' => '* Email')
+                'label'     => false,
+                'attr'      => array('placeholder' => '* Email')
             ))
             ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => array('attr' => array('class' => 'password-field')),
-                'required' => true,
-                'first_options'  => array(
-                    'label' => false,
-                    'attr' => array('placeholder' => '* Password'
+                'type'                  => PasswordType::class,
+                'invalid_message'       => 'The password fields must match.',
+                'options'               => array('attr' => array('class' => 'password-field')),
+                'required'              => true,
+                'first_options'         => array(
+                    'label'             => false,
+                    'attr'              => array('placeholder' => '* Password'
                     )),
-                'second_options' => array(
-                    'label' => false,
-                    'attr' => array(
-                        'placeholder' => '* Repeat Password'
+                'second_options'        => array(
+                    'label'             => false,
+                    'attr'              => array(
+                        'placeholder'   => '* Repeat Password'
                     )),
             ));
     }
@@ -59,8 +59,8 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\User',
-            'em' => null,
+            'data_class'    => 'AppBundle\Entity\User',
+            'em'            => null,
         ]);
     }
 

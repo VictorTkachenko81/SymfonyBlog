@@ -43,8 +43,13 @@
                         <img src="{{ asset(user.getWebPath|imagine_filter('user_thumbnail')) }}" class="avatar" alt="avatar">
                     {% endif %}
                     </td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.role.name }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        {% for key, role in user.roles %}
+                            {% if key != 0 %},{% endif %}{{ role }}
+                        {% endfor %}
+                    </td>
+                    {#<td>{{ user.role.name }}</td>#}
                     <td>{{ user.email }}</td>
                     <td>{{ user.password }}</td>
                     <td>{{ user.createdAt|date("M d, Y") }}</td>

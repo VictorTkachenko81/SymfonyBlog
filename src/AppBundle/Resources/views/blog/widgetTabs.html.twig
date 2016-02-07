@@ -27,7 +27,7 @@
                                     <i class="fa fa-star-o"></i> {{ popularArticle.rating|round(1) }} {{ popularArticle.0.title }}
                                 </a></h4>
                             <span class="text-muted">
-                                {{ popularArticle.0.createdAt|date("M d, Y") }} | by {{ popularArticle.0.user.name }}
+                                {{ popularArticle.0.createdAt|date("M d, Y") }} | by {{ popularArticle.0.user.username }}
                             </span>
                         </li>
                     {% endfor %}
@@ -42,7 +42,7 @@
                                     {{ recentArticle.title }}
                                 </a></h4>
                             <span class="text-muted">
-                                {{ recentArticle.createdAt|date("M d, Y") }} | by {{ recentArticle.user.name }}
+                                {{ recentArticle.createdAt|date("M d, Y") }} | by {{ recentArticle.user.username }}
                             </span>
                         </li>
                     {% endfor %}
@@ -63,7 +63,7 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">
                                         <a href="{{ url('sortArticles', {'sortBy': 'author', 'param': recentComment.user.slug}) }}">
-                                            {{ recentComment.user.name }}
+                                            {{ recentComment.user.username }}
                                         </a>
                                         in
                                         <a href="{{ url('showArticle', {'slug': recentComment.article.slug}) }}">

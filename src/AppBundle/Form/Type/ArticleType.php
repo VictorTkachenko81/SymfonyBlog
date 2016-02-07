@@ -21,7 +21,7 @@ class ArticleType extends AbstractType
         $builder
             ->add('user', EntityType::class, array(
                 'class'         => 'AppBundle:User',
-                'choice_label'  => 'name',
+                'choice_label'  => 'username',
                 'placeholder'   => '* Choose user (remove after security)',
             ))
             ->add('title', TextType::class, array(

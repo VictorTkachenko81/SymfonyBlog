@@ -4,4 +4,4 @@ AppBundle\Entity\User:
     photo: "user1.png"
     email: 'email@gmail.com'
     password: 'password'
-    role: @role1
+    roleObject: @role1

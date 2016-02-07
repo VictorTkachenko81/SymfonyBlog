@@ -3,16 +3,24 @@
 security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+#    providers:
+#        in_memory:
+#            memory:
+#                users:
+#                    ryan:
+#                        password: ryanpass
+#                        roles: 'ROLE_USER'
+#                    admin:
+#                        password: kitten
+#                        roles: 'ROLE_ADMIN'
+
     providers:
-        in_memory:
-            memory:
-                users:
-                    ryan:
-                        password: ryanpass
-                        roles: 'ROLE_USER'
-                    admin:
-                        password: kitten
-                        roles: 'ROLE_ADMIN'
+        our_db_provider:
+            entity:
+                class: AppBundle:User
+                property: username
+#                 if you're using multiple entity managers
+#                 manager_name: customer
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -25,6 +33,7 @@ security:
             form_login:
                 login_path: /login
                 check_path: /login_check
+            provider: our_db_provider
 
             # activate different ways to authenticate
 
@@ -42,5 +51,12 @@ security:
         # require ROLE_ADMIN for /admin*
         - { path: ^/admin, roles: ROLE_ADMIN }
 
+#    encoders:
+#        Symfony\Component\Security\Core\User\User: plaintext
+
+#    encoders:
+#        AppBundle\Entity\User:
+#            algorithm: bcrypt
+
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        AppBundle\Entity\User: plaintext

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -29,17 +30,17 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50, unique=true)
+     * @ORM\Column(name="username", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank()
      * @Assert\Length(max = 50)
      */
-    private $name;
+    private $username;
 
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="_")
+     * @Gedmo\Slug(fields={"username"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=50, unique=true)
      *
      * @Assert\Length(max = 50)
@@ -97,10 +98,20 @@ class User
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinTable(name="users_roles")
      */
-    private $role;
+    private $roles;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(name="salt", type="string", length=50)
+     */
+    private $salt;
 
     /**
      * @var \DateTime
@@ -131,6 +142,17 @@ class User
      */
     private $deletedAt;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+        $this->isActive = true;
+        $this->salt = md5(uniqid(null, true));
+    }
 
     /**
      * Get id
@@ -143,15 +165,15 @@ class User
     }
 
     /**
-     * Set user
+     * Set username
      *
-     * @param string $name
+     * @param string $username
      *
      * @return User
      */
-    public function setName($name)
+    public function setUsername($username)
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
@@ -161,9 +183,9 @@ class User
      *
      * @return string
      */
-    public function getName()
+    public function getUsername()
     {
-        return $this->name;
+        return $this->username;
     }
 
     /**
@@ -285,14 +307,6 @@ class User
     {
         return $this->deletedAt;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->articles = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
 
     /**
      * Add article
@@ -360,30 +374,6 @@ class User
     public function getComments()
     {
         return $this->comments;
-    }
-
-    /**
-     * Set role
-     *
-     * @param \AppBundle\Entity\Role $role
-     *
-     * @return User
-     */
-    public function setRole(Role $role = null)
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    /**
-     * Get role
-     *
-     * @return \AppBundle\Entity\Role
-     */
-    public function getRole()
-    {
-        return $this->role;
     }
 
     /**
@@ -477,4 +467,110 @@ class User
         return 'media/users';
     }
 
+    /**
+     * Set isActive
+     *
+     * @param string $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return string
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    public function getSalt()
+    {
+        //return $this->salt;
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * Add role
+     *
+     * @param \AppBundle\Entity\Role $roleObject
+     *
+     * @return User
+     */
+    public function addRoleObject(Role $roleObject)
+    {
+        $this->roles[] = $roleObject;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param \AppBundle\Entity\Role $roleObject
+     */
+    public function removeRoleObject(Role $roleObject)
+    {
+        $this->roles->removeElement($roleObject);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoleObjects()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+        $roleName = [];
+        foreach ($this->roles as $role) {
+            $roleName[] = $role->getName();
+        }
+
+        return $roleName;
+    }
 }
