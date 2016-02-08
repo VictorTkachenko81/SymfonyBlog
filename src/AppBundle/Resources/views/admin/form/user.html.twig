@@ -3,5 +3,19 @@
 
 {% block content %}
     <h2 class="section-heading">{{ title }}</h2>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10" style="margin-bottom: 15px;">
+        {% if app.request.attributes.get('action') is defined %}
+            {% if app.request.attributes.get('action') != 'new' %}
+                <a href="{{ url('userEdit', {'action': 'edit', 'id': app.request.attributes.get('id')}) }}" style="margin-right: 10px;">
+                    <i class="fa fa-arrow-left"></i> Back</a>
+            {% endif %}
+            <a href="{{ url('userPhotoEdit', {'id': app.request.attributes.get('id')}) }}" style="margin-right: 10px;">
+                <i class="fa fa-picture-o"></i> Change photo</a>
+            <a href="{{ url('userPasswordEdit', {'id': app.request.attributes.get('id')}) }}">
+                <i class="fa fa-shield"></i> Change password</a>
+        {% else %}
+        {% endif %}
+    </div>
     {{ form(form) }}
 {% endblock content %}

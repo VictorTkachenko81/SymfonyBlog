@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class UserPhotoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,24 +22,8 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('isActive', ChoiceType::class, array(
-                'choices'   => array(
-                    'Yes'   => true,
-                    'No'    => false,
-                ),
-                'choices_as_values' => true,
-            ))
-            ->add('username', TextType::class, array(
-                'attr'          => array('placeholder' => '* Username')
-            ))
-            ->add('roleObjects', EntityType::class, array(
-                'class'         => 'AppBundle:Role',
-                'choice_label'  => 'name',
-                'placeholder'   => '* Role',
-                'multiple'      => 'true',
-            ))
-            ->add('email', EmailType::class, array(
-                'attr'      => array('placeholder' => '* Email')
+            ->add('file', FileType::class, array(
+                'attr'      => array('placeholder' => '* Photo')
             ));
     }
 
@@ -53,6 +37,6 @@ class UserType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return "user";
+        return "userPhoto";
     }
 }

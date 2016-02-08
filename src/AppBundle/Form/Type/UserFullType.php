@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class UserFullType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -38,8 +38,24 @@ class UserType extends AbstractType
                 'placeholder'   => '* Role',
                 'multiple'      => 'true',
             ))
+            ->add('file', FileType::class, array(
+                'attr'      => array('placeholder' => '* Photo')
+            ))
             ->add('email', EmailType::class, array(
                 'attr'      => array('placeholder' => '* Email')
+            ))
+            ->add('password', RepeatedType::class, array(
+                'type'                  => PasswordType::class,
+                'invalid_message'       => 'The password fields must match.',
+                'options'               => array('attr' => array('class' => 'password-field')),
+                'required'              => true,
+                'first_options'         => array(
+                    'attr'              => array('placeholder' => '* Password'
+                    )),
+                'second_options'        => array(
+                    'attr'              => array(
+                        'placeholder'   => '* Repeat Password'
+                    )),
             ));
     }
 

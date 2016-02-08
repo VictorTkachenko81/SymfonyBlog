@@ -3,6 +3,9 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\Type\UserFullType;
+use AppBundle\Form\Type\UserPasswordType;
+use AppBundle\Form\Type\UserPhotoType;
 use AppBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -72,10 +75,94 @@ class UserController extends Controller
             $title = 'Create new user';
         }
 
-
-        $form = $this->createForm(UserType::class, $user, [
+        $type = $action == 'new' ? UserFullType::class : UserType::class;
+        $form = $this->createForm($type, $user, [
             'em' => $em,
             'action' => $this->generateUrl('userEdit', ['action' => $action, 'id' => $id]),
+            'method' => Request::METHOD_POST,
+        ])
+            ->add('save', SubmitType::class, array('label' => 'Save'));
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('userEdit', ['action' => 'edit', 'id' => $user->getId()]);
+            }
+        }
+
+        return [
+            'title' => $title,
+            'form'  => $form->createView(),
+        ];
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @Route("/userPhoto/edit/{id}", name="userPhotoEdit",
+     *     requirements={
+     *      "id": "\d+"
+     *     })
+     * @Method({"GET", "POST"})
+     * @Template("AppBundle:admin/form:user.html.twig")
+     *
+     * @return Response
+     */
+    public function editUserPhotoAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($id);
+        $title = 'Edit user id: '.$id;
+
+        $form = $this->createForm(UserPhotoType::class, $user, [
+            'em' => $em,
+            'action' => $this->generateUrl('userPhotoEdit', ['id' => $id]),
+            'method' => Request::METHOD_POST,
+        ])
+            ->add('save', SubmitType::class, array('label' => 'Save'));
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('userEdit', ['action' => 'edit', 'id' => $user->getId()]);
+            }
+        }
+
+        return [
+            'title' => $title,
+            'form'  => $form->createView(),
+        ];
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @Route("/userPassword/edit/{id}", name="userPasswordEdit",
+     *     requirements={
+     *      "id": "\d+"
+     *     })
+     * @Method({"GET", "POST"})
+     * @Template("AppBundle:admin/form:user.html.twig")
+     *
+     * @return Response
+     */
+    public function editUserPasswordAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($id);
+        $title = 'Edit user id: '.$id;
+
+        $form = $this->createForm(UserPasswordType::class, $user, [
+            'em' => $em,
+            'action' => $this->generateUrl('userPasswordEdit', ['id' => $id]),
             'method' => Request::METHOD_POST,
         ])
             ->add('save', SubmitType::class, array('label' => 'Save'));
@@ -94,7 +181,7 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirectToRoute('usersAdmin');
+                return $this->redirectToRoute('userEdit', ['action' => 'edit', 'id' => $user->getId()]);
             }
         }
 

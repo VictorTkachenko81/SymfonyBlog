@@ -17,6 +17,7 @@
             <thead>
             <tr>
                 <th>#</th>
+                <th>isActive</th>
                 <th>Photo</th>
                 <th>Name</th>
                 <th>Role</th>
@@ -38,6 +39,13 @@
             {% for key, user in users %}
                 <tr>
                     <td>{{ first + key + 1 }}</td>
+                    <td>
+                        {% if user.isActive == 1 %}
+                            yes
+                        {% else %}
+                            no
+                        {% endif %}
+                    </td>
                     <td class="comments">
                     {% if user.photo %}
                         <img src="{{ asset(user.getWebPath|imagine_filter('user_thumbnail')) }}" class="avatar" alt="avatar">
