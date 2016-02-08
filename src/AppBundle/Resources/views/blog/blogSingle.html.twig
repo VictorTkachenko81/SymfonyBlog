@@ -59,15 +59,18 @@
             {{ render( controller('AppBundle:Blog/Blog:showArticleComments', {'slug': app.request.attributes.get('slug')})) }}
         </article>
         <!-- end comments -->
-        <hr>
 
-        <!-- comment form -->
-        <section class="comment-form margin-bottom" id="formBlock">
-            <h3 class="section-heading">Leave A Comment</h3>
-            <p class="heading">Required fields are marked *. Your email will not be published or shared.</p>
-            {{ render( controller('AppBundle:Blog/Blog:newComment', {'slug': app.request.attributes.get('slug')})) }}
-        </section>
-        <!-- end comment form -->
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {#<hr>#}
+            <!-- comment form -->
+            <section class="comment-form margin-bottom" id="formBlock">
+                <h3 class="section-heading">Leave A Comment</h3>
+                <div id="commentFormBody">
+                    {{ render( controller('AppBundle:Blog/Blog:newComment', {'slug': app.request.attributes.get('slug')})) }}
+                </div>
+            </section>
+            <!-- end comment form -->
+        {% endif %}
 
     </div>
     <!-- END BLOG SINGLE -->
@@ -92,6 +95,42 @@
                     }
                 }).done(function (html) {
                     $("#comments").html(html);
+                });
+            });
+
+            $(".remove").on( "click", function ( event ) {
+                event.preventDefault();
+//                alert($( this).attr("href"));
+                $.ajax({
+                    url: $( this ).attr("href"),
+                    dataType: "html",
+                    method: "GET",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (html) {
+                    $("#comments").html(html);
+                    $("#formBlock").html("");
+                });
+            });
+
+            $(".edit").on( "click", function ( event ) {
+                event.preventDefault();
+//                alert($(this).attr("href"));
+                $.ajax({
+                    url: $( this ).attr("href"),
+                    dataType: "html",
+                    method: "GET",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (html) {
+                    $("#comments").html("");
+                    $("#commentFormBody").html(html);
                 });
             });
         });

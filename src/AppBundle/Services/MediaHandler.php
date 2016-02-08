@@ -23,11 +23,13 @@ class MediaHandler
 
     public function clearCache($file, $path)
     {
-        $absolutePath = $this->getAbsolutePath().'/'.$path.'/'.$file;
-        if (file_exists($absolutePath)) {
-            unlink($absolutePath);
+        if ($file != null) {
+            $absolutePath = $this->getAbsolutePath().'/'.$path.'/'.$file;
+            if (file_exists($absolutePath)) {
+                unlink($absolutePath);
+            }
+            $this->cacheManager->remove($path.'/'.$file);
         }
-        $this->cacheManager->remove($path.'/'.$file);
     }
 
     public function getAbsolutePath()

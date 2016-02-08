@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class BlogHandler
 {
@@ -23,17 +24,20 @@ class BlogHandler
     protected $formFactory;
     protected $router;
     protected $validator;
+    protected $tokenStorage;
 
     public function __construct(RegistryInterface $doctrine,
                                 FormFactoryInterface $formFactory,
                                 RouterInterface $router,
-                                ValidatorInterface $validator
+                                ValidatorInterface $validator,
+                                TokenStorage $tokenStorage
     )
     {
         $this->doctrine = $doctrine;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->validator = $validator;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function getArticles($page)
@@ -84,37 +88,27 @@ class BlogHandler
             ->getArticleComment($slug, $page, 5);
     }
 
-    public function addComment(Request $request, $slug)
+    public function addComment(Request $request, $slug, $id = null)
     {
         $em = $this->doctrine->getManager();
         $article = $em->getRepository("AppBundle:Article")
             ->findOneBySlug($slug);
-        $comment = new Comment();
-        $comment->setArticle($article);
+
+        if ($id != null) {
+            $comment = $em->getRepository('AppBundle:Comment')->find($id);
+        }
+        else {
+            $comment = new Comment();
+            $comment->setArticle($article);
+            $user = $this->tokenStorage->getToken()->getUser();
+            $comment->setUser($user);
+        }
 
         $form = $this->formFactory->create(CommentType::class, $comment, [
             'em' => $em,
-            'action' => $this->router->generate('commentForm', ['slug' => $slug]),
+            'action' => $this->router->generate('commentForm', ['slug' => $slug, 'id' => $id]),
             'method' => Request::METHOD_POST,
         ]);
-
-        //ToDo: check isUserAnonymous
-        if ($user = 'anonymous') {
-            $form
-                ->add('user', EntityType::class, array(
-                    'class' => 'AppBundle:User',
-                    'choice_label' => 'username',
-                    'placeholder' => '* Choose user (remove after security)',
-                ))
-                ->add('name', TextType::class, array(
-                        'attr' => array('placeholder' => '* Name (anonymous)')
-                    )
-                )
-                ->add('email', EmailType::class, array(
-                        'attr' => array('placeholder' => '* Email (anonymous)')
-                    )
-                );
-        }
 
         $form
             ->add('save', SubmitType::class, array(

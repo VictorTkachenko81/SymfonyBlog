@@ -72,7 +72,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=50)
+     * @ORM\Column(name="email", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank()
      * @Assert\Email()

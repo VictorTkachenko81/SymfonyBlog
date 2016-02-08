@@ -22,9 +22,11 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('rating', ChoiceType::class, array(
-                'choices' => range(0, 5),
+                'choices'           => range(0, 5),
                 'choices_as_values' => true,
-                'placeholder' => '* Rating'
+                'expanded'          => true,
+                'multiple'          => false,
+                'empty_data'        => 3
             ))
             ->add('text', TextareaType::class, array(
                     'attr' => array('placeholder' => '* Your comments')

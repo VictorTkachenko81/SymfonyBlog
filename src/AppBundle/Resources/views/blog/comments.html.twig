@@ -16,8 +16,13 @@
                         <h4 class="media-heading comment-author"><a href="#">{{ comment.user.username }}</a></h4><span
                                 class="timestamp text-muted">{{ comment.createdAt|date("M d, Y H:i:s") }}</span>
                         <p>{{ comment.text }}</p>
-                        <p><i class="fa fa-star-o"></i> {{ comment.rating }}</p>
-                        <p><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
+                        <p>
+                            <i class="fa fa-star-o"></i> {{ comment.rating }}
+                            {% if comment.isAuthor(app.user) or is_granted('ROLE_ADMIN') %}
+                                <a href="{{ url('commentForm', {'slug': comment.article.slug, 'id': comment.id}) }}" style="margin:0 10px;" class="edit"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                                <a href="{{ url('deleteFormRender', {'id': comment.id }) }}" class="remove"><i class="fa fa-times"></i> Remove</a>
+                            {% endif %}
+                        </p>
                         <hr>
                     </div>
                 </div>

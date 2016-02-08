@@ -27,7 +27,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
-     *  @Assert\NotBlank(message = "User field should not be blank")
+     * @Assert\NotBlank(message = "User field should not be blank")
      */
     private $user;
 
@@ -329,5 +329,14 @@ class Comment
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param User|null $user
+     * @return bool
+     */
+    public function isAuthor(User $user = null)
+    {
+        return $user && $user->getEmail() == $this->getUser()->getEmail();
     }
 }
