@@ -567,7 +567,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Get roles
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return array
      */
     public function getRoles()
     {

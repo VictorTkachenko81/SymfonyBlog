@@ -28,16 +28,6 @@ class CommentAdminType extends AbstractType
                 'choice_label' => 'username',
                 'placeholder' => '* Choose user (remove after security)',
             ))
-            ->add('name', TextType::class, array(
-                    'attr' => array('placeholder' => '* Name (anonymous)'),
-                    'required' => false,
-                )
-            )
-            ->add('email', EmailType::class, array(
-                    'attr' => array('placeholder' => '* Email (anonymous)'),
-                    'required' => false,
-                )
-            )
             ->add('rating', ChoiceType::class, array(
                 'choices' => range(0, 5),
                 'choices_as_values' => true,

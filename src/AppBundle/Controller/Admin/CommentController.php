@@ -33,7 +33,7 @@ class CommentController extends Controller
      *
      * @return Response
      */
-    public function roleAction(Request $request, $page = 1)
+    public function commentsAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
         $comments = $em->getRepository("AppBundle:Comment")
@@ -68,6 +68,8 @@ class CommentController extends Controller
             if ($form->isValid()) {
                 $data = $form->getData();
                 foreach ($data['comments'] as $comment) {
+
+                    $this->denyAccessUnlessGranted('delete', $comment);
                     $em->remove($comment);
                 }
 
@@ -113,6 +115,8 @@ class CommentController extends Controller
         $comment = $em->getRepository('AppBundle:Comment')
             ->find($id);
         $title = 'Edit comment id: "'.$id. '" for article "' . $comment->getArticle()->getTitle() . '"';
+
+        $this->denyAccessUnlessGranted('edit', $comment);
 
         $form = $this->createForm(CommentAdminType::class, $comment, [
             'em' => $em,

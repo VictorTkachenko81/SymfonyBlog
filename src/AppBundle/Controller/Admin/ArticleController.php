@@ -32,7 +32,7 @@ class ArticleController extends Controller
      *
      * @return Response
      */
-    public function roleAction(Request $request, $page = 1)
+    public function articlesAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository("AppBundle:Article")
@@ -65,11 +65,18 @@ class ArticleController extends Controller
             $article = $em->getRepository('AppBundle:Article')
                 ->find($id);
             $title = 'Edit article id: '.$id;
+
+            $this->denyAccessUnlessGranted('edit', $article);
         }
         else {
             $article = new Article();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $article->setUser($user);
             $title = 'Create new article';
+
+            $this->denyAccessUnlessGranted('create', $article);
         }
+
 
         $form = $this->createForm(ArticleType::class, $article, [
             'em'        => $em,
@@ -115,6 +122,7 @@ class ArticleController extends Controller
         $message .= 'Related records will be deleted: comments (count: ' . count($article->getComments()) . '). ';
         $message .= 'Are you sure, you want to continue?';
 
+        $this->denyAccessUnlessGranted('delete', $article);
 
         $form = $this->createFormBuilder($article)
             ->setAction($this->generateUrl('articleDelete', ['id' => $id]))

@@ -5,9 +5,6 @@
                 <li>
                     <a href="{{ url('homepage') }}">HOME</a>
                 </li>
-                <li>
-                    <a href="{{ url('mainAdmin') }}">ADMIN</a>
-                </li>
                 <li class="dropdown">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <a href="#" data-toggle="dropdown">MY ACCOUNT <i class="fa fa-angle-down"></i></a>
@@ -15,6 +12,9 @@
                             <li>
                                 <div style="width: 300px; padding: 0 15px;">
                                     <h3 class="section-heading">Username: {{ app.user.username }}</h3>
+                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
+                                        <p><a href="{{ url('mainAdmin') }}"><strong>Go to admin panel</strong></a>
+                                    {% endif %}
                                     <p><a href="{{ url("logout_route") }}"><strong>Sign Out</strong></a>
                                 </div>
                             </li>

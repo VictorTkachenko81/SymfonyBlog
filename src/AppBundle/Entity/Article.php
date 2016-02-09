@@ -487,4 +487,12 @@ class Article
         return 'media/posts';
     }
 
+    /**
+     * @param User|null $user
+     * @return bool
+     */
+    public function isAuthor(User $user = null)
+    {
+        return $user && $user->getEmail() == $this->getUser()->getEmail();
+    }
 }

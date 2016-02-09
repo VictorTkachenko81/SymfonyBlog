@@ -19,17 +19,10 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', EntityType::class, array(
-                'class'         => 'AppBundle:User',
-                'choice_label'  => 'username',
-                'placeholder'   => '* Choose user (remove after security)',
-            ))
             ->add('title', TextType::class, array(
-                'label'         => false,
                 'attr'          => array('placeholder' => '* Title')
             ))
             ->add('file', FileType::class, array(
-                'label'         => false,
                 'attr'          => array('placeholder' => '* Picture')
             ))
             ->add('categories', EntityType::class, array(

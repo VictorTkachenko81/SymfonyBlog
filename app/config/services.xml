@@ -31,5 +31,19 @@
             <argument type="service" id="security.token_storage"/>
         </service>
 
+        <service id="app.article_voter"
+                 class="AppBundle\Services\ArticleVoter"
+                 public="false">
+            <tag name="security.voter" />
+            <argument type="service" id="security.access.decision_manager"/>
+        </service>
+
+        <service id="app.comment_voter"
+                 class="AppBundle\Services\CommentVoter"
+                 public="false">
+            <tag name="security.voter" />
+            <argument type="service" id="security.access.decision_manager"/>
+        </service>
+
     </services>
 </container>
