@@ -27,18 +27,4 @@ class SecurityController extends Controller
             )
         );
     }
-
-    /**
-     * @Route("/login_check", name="login_check")
-     */
-    public function loginCheckAction()
-    {
-    }
-
-    /**
-    * @Route("/logout", name="logout_route")
-    */
-    public function logoutAction()
-    {
-    }
 }

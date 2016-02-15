@@ -1,5 +1,5 @@
 <div class="widget">
-    <h4 class="widget-title">CATEGORIES</h4>
+    <h4 class="widget-title">{{ 'Categories'|trans }}</h4>
     <ul class="list-unstyled category-list">
         {% for category in categories %}
             <li><a href="{{ url('sortArticles', {'sortBy': 'category', 'param': category.0.slug}) }}">

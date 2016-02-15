@@ -1,9 +1,9 @@
 <div class="page-header">
     <div class="container">
-        <h1 class="page-title pull-left">BLOG</h1>
+        <h1 class="page-title pull-left">{{ 'Blog'|trans }}</h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url('homepage') }}">Home</a></li>
-            <li class="active">Blog</li>
+            <li><a href="{{ url('homepage') }}">{{ 'Home'|trans }}</a></li>
+            <li class="active">{{ 'Blog'|trans }}</li>
             {% if app.request.attributes.get('_route') == 'showArticle' %}
                 <li class="active">{{ app.request.attributes.get('slug') }}</li>
             {% elseif app.request.attributes.get('_route') == 'sortArticles' %}

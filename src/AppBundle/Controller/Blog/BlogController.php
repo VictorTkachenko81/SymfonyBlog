@@ -18,11 +18,12 @@ class BlogController extends Controller
     /**
      * @param $page
      * @Method("GET")
-     * @Route("/{pager}/{page}", name="homepage",
-     *     defaults={"pager": "page", "page": 1},
+     * @Route("/{_locale}/{pager}/{page}", name="homepage",
+     *     defaults={"pager": "page", "page": 1, "_locale": "%locale%"},
      *     requirements={
      *          "pager": "page",
      *          "page": "[1-9]\d*",
+     *          "_locale": "%available.locales%"
      *     })
      * @Template("AppBundle:blog:blogPosts.html.twig")
      *
@@ -41,7 +42,9 @@ class BlogController extends Controller
     /**
      * @param $slug
      * @Method("GET")
-     * @Route("/article/{slug}", name="showArticle")
+     * @Route("/{_locale}/article/{slug}", name="showArticle",
+     *     defaults={"_locale": "%locale%"},
+     *     requirements={"_locale": "%available.locales%"})
      * @Template("AppBundle:blog:blogSingle.html.twig")
      *
      * @return Response
@@ -61,12 +64,13 @@ class BlogController extends Controller
      * @param $param
      * @param $page
      * @Method("GET")
-     * @Route("/{sortBy}/{param}/{pager}/{page}", name="sortArticles",
-     *     defaults={"pager": "page", "page": 1},
+     * @Route("/{_locale}/{sortBy}/{param}/{pager}/{page}", name="sortArticles",
+     *     defaults={"pager": "page", "page": 1, "_locale": "%locale%"},
      *     requirements={
      *          "sortBy": "category|tag|author|date",
      *          "pager": "page",
      *          "page": "[1-9]\d*",
+     *          "_locale": "%available.locales%",
      *     })
      * @Template("AppBundle:blog:blogPosts.html.twig")
      *
@@ -86,7 +90,9 @@ class BlogController extends Controller
     /**
      * @param Request $request
      * @Method("POST")
-     * @Route("/search", name="searchArticles")
+     * @Route("/{_locale}/search", name="searchArticles",
+     *     defaults={"_locale": "%locale%"},
+     *     requirements={"_locale": "%available.locales%"})
      * @Template("AppBundle:blog:blogPosts.html.twig")
      *
      * @return Response
@@ -102,10 +108,11 @@ class BlogController extends Controller
      * @param Request $request
      * @param $slug
      * @param $id
-     * @Route("/commentFor/{slug}/{id}", name="commentForm",
-     *     defaults={"id": 0},
+     * @Route("/{_locale}/commentFor/{slug}/{id}", name="commentForm",
+     *     defaults={"id": 0, "_locale": "%locale%"},
      *     requirements={
-     *      "id": "\d+"
+     *          "id": "\d+",
+     *          "_locale": "%available.locales%",
      *     })
      * @Template("AppBundle:blog:commentForm.html.twig")
      *
@@ -121,11 +128,12 @@ class BlogController extends Controller
     /**
      * @param $slug
      * @param $page
-     * @Route("/comments/{slug}/{pager}/{page}", name="articleComments",
-     *     defaults={"pager": "page", "page": 1},
+     * @Route("/{_locale}/comments/{slug}/{pager}/{page}", name="articleComments",
+     *     defaults={"pager": "page", "page": 1, "_locale": "%locale%"},
      *     requirements={
      *          "pager": "page",
      *          "page": "[1-9]\d*",
+     *          "_locale": "%available.locales%",
      *     })
      * @Template("AppBundle:blog:comments.html.twig")
      *
@@ -142,7 +150,9 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/success", name="success")
+     * @Route("/{_locale}/success", name="success",
+     *     defaults={"_locale": "%locale%"},
+     *     requirements={"_locale": "%available.locales%"})
      * @Template("AppBundle:blog:success.html.twig")
      *
      * @return Response
@@ -153,7 +163,9 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/search_form_render", name="searchFormRender")
+     * @Route("/{_locale}/search_form_render", name="searchFormRender",
+     *     defaults={"_locale": "%locale%"},
+     *     requirements={"_locale": "%available.locales%"})
      * @Template("AppBundle:blog:widgetSearchForm.html.twig")
      *
      * @return Response
@@ -170,10 +182,11 @@ class BlogController extends Controller
     /**
      * @param $id
      * @param Request $request
-     * @Route("/deleteComment/{id}", name="deleteFormRender",
+     * @Route("/{_locale}/deleteComment/{id}", name="deleteFormRender",
+     *     defaults={"_locale": "%locale%"},
      *     requirements={
-     *      "id": "\d+"
-     *     })
+     *          "id": "\d+",
+     *          "_locale": "%available.locales%"})
      * @Template("AppBundle:blog:widgetDeleteForm.html.twig")
      *
      * @return Response
